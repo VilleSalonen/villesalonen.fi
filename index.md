@@ -18,16 +18,16 @@ title: CV
 
 ## Education
 
-  * <strong>Master of Science, Information Technology: University of Jyväskylä (2006-2012)</strong> [[Diploma](http://www.villesalonen.fi/todistukset/masters_diploma.jpg), [Course History](http://www.villesalonen.fi/todistukset/transcript.html)]
+  * <strong>Master of Science, Information Technology: University of Jyväskylä (2006-2012)</strong> [[Diploma](/assets/masters_diploma.jpg), [Course History](/assets/transcript.html)]
     * Major: Information Technology - Grade: good
     * Minor: Technology Business - Grade: very good
-  * <strong>Bachelor of Science, Information Technology: University of Jyväskylä (2006-2011)</strong> [[Diploma]](http://www.villesalonen.fi/todistukset/luk-tutkinto.jpg)
+  * <strong>Bachelor of Science, Information Technology: University of Jyväskylä (2006-2011)</strong> [[Diploma](/assets/luk-tutkinto.jpg)]
     * Major: Information Technology, main studies - Grade: very good
     * Minor: Mathematics, basic studies - Grade: good
     * Minor: Statistics, basic studies - Grade: good
   * <strong>Finnish Matriculation Examination: Cygnaeus Upper Secondary School (2002-2005)</strong>
-    * Matriculation Examination Grade: magna cum laude approbatur [[Diploma](http://www.villesalonen.fi/todistukset/ylioppilastodistus.jpg)]
-    * Grade Average: 8.6 [[High School Diploma](http://www.villesalonen.fi/todistukset/lukiotodistus.jpg)]
+    * Matriculation Examination Grade: magna cum laude approbatur [[Diploma](/assets/ylioppilastodistus.jpg)]
+    * Grade Average: 8.6 [[High School Diploma](/assets/lukiotodistus.jpg)]
 
 ## About Me
 
