@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Redesigning website by making it worse"
+title:  "Redesigning Website By Making It Worse"
 date:   2011-09-15
 ---
 
