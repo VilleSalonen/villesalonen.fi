@@ -54,8 +54,8 @@ For complete list of my open source involvement, please see [my Github page](htt
   * [Sudoku solver](https://github.com/VilleSalonen/sudoku-solver-bit-arithmetic) - An exercise in algorithm design. This solver uses the same logical steps as I do. Also like me, it cannot solve Evil level puzzles on WebSudoku yet, d'oh!
 
 ## Publications
-  * <a href="http://villesalonen.fi/2012/automatic-portability-testing/" title="Automatic Portability Testing"><strong>Automatic Portability Testing</strong></a>, Master's Thesis, University of Jyväskylä
-  * <a href="http://www.villesalonen.fi/2011/javasta-ciin/"><strong>From Java To C#</strong></a> (in Finnish), Bachelor's Thesis, University of Jyväskylä
+  * <a href="/2012/10/17/automatic-portability-testing/" title="Automatic Portability Testing"><strong>Automatic Portability Testing</strong></a>, Master's Thesis, University of Jyväskylä
+  * <a href="/2011/03/21/javasta-c-sharpiin/"><strong>From Java To C#</strong></a> (in Finnish), Bachelor's Thesis, University of Jyväskylä
 
 ## Other Achievements
   * Participated in Finlandia Marathon thrice. In 2011 I ran 14-kilometre track and in 2012 and 2014 I ran half marathon.
