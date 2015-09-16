@@ -54,8 +54,8 @@ Kattava lista avoimen lähdekoodin annistani löytyy [Github-sivultani](https://
 
 ## Julkaisut
 
-  * <a href="http://villesalonen.fi/2012/automatic-portability-testing/" title="Automatic Portability Testing"><strong>Automatic Portability Testing</strong></a> (englanniksi), pro gradu -tutkielma, Jyväskylän yliopisto
-  * <a href="http://www.villesalonen.fi/2011/javasta-ciin/"><strong>Javasta C#:iin</strong></a>, kandidaatintutkielma, Jyväskylän yliopisto
+  * <a href="/2012/10/17/automatic-portability-testing/" title="Automatic Portability Testing"><strong>Automatic Portability Testing</strong></a> (englanniksi), pro gradu -tutkielma, Jyväskylän yliopisto
+  * <a href="/2011/03/21/javasta-c-sharpiin/"><strong>Javasta C#:iin</strong></a>, kandidaatintutkielma, Jyväskylän yliopisto
 
 ## Muut ansiot
   * Olen osallistunut kahdesti Finlandia-marathoniin: 2011 juoksin 14 kilometrin reitin ja 2012 puolimaratoonin.
