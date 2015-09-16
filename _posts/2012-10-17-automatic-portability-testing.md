@@ -1001,7 +1001,7 @@ Instead test manager should select the used levels based on a number of
 variables such as complexity of the system, number of unique users and
 budget. Unfortunately there is no formal formula for this decision.
 
-<p style="text-align: center"><a href="http://villesalonen.fi/wp-content/uploads/2012/10/v_model.png"><img src="http://villesalonen.fi/wp-content/uploads/2012/10/v_model-300x225.png" alt="" title="" width="300" height="225" /></a></p>
+<p style="text-align: center"><a href="/assets/v_model.png"><img src="/assets/v_model.png" alt="" title="" width="300" height="225" /></a></p>
 
 <p style="text-align: center; width: 100%;"><em>Figure 4.1: Test levels and their corresponding development levels.</em></p>
 
@@ -1131,7 +1131,7 @@ larger and thus may require more testing resources. This level of
 testing may be done by the developers but it may also be performed by a
 dedicated test team [<a href="#systematic_software_testing">100</a>].
 
-<p style="text-align: center"><a href="http://villesalonen.fi/wp-content/uploads/2012/10/integration_car_example.png"><img src="http://villesalonen.fi/wp-content/uploads/2012/10/integration_car_example-300x201.png" alt="" title="integration_car_example" width="300" height="201" class="aligncenter size-medium wp-image-715" /></a></p>
+<p style="text-align: center"><a href="/assets/integration_car_example.png"><img src="/assets/integration_car_example.png" alt="" title="integration_car_example" width="300" height="201" class="aligncenter size-medium wp-image-715" /></a></p>
 
 <p style="text-align: center; width: 100%;"><em>Figure 4.2: "Levels of Integration in a Typical Car" [<a href="#systematic_testing_book">22</a>]</em></p>
 
