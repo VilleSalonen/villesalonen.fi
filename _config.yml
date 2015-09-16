@@ -1,0 +1,11 @@
+# Site settings
+title: Ville Salonen
+description: "Software Designer, Photographer"
+baseurl: ""
+url: "http://villesalonen.fi"
+twitter_username: VilleSalonenFi
+github_username:  VilleSalonen
+
+# Build settings
+markdown: kramdown
+permalink: pretty
