@@ -17,16 +17,16 @@ permalink: /cv-suomeksi/
 
 ## Koulutus
 
-  * <strong>Filosofian maisteri, tietotekniikka: Jyväskylän yliopisto (2006-2012)</strong> [[Tutkintotodistus](http://www.villesalonen.fi/todistukset/masters_diploma.jpg), [Opintosuoritusote](http://www.villesalonen.fi/todistukset/opintosuoritusote.html)]
+  * <strong>Filosofian maisteri, tietotekniikka: Jyväskylän yliopisto (2006-2012)</strong> [[Tutkintotodistus](/assets/masters_diploma.jpg), [Opintosuoritusote](/assets/opintosuoritusote.html)]
     * Pääaine: tietotekniikka, ohjelmistotekniikka - arvosana: hyvä
     * Sivuaine: teknologialiiketoiminta - arvosana: kiitettävä
-  * <strong>Luontotieteiden kandidaatti, tietotekniikka: Jyväskylän yliopisto (2006-2011)</strong> [[Tutkintotodistus]](http://www.villesalonen.fi/todistukset/luk-tutkinto.jpg)
+  * <strong>Luontotieteiden kandidaatti, tietotekniikka: Jyväskylän yliopisto (2006-2011)</strong> [[Tutkintotodistus]](/assets/luk-tutkinto.jpg)
     * Pääaine: Tietotekniikka, perus- ja aineopinnot - arvosana: kiitettävä
     * Sivuaine: Matematiikka, perusopinnot - arvosana: hyvä
     * Sivuaine: Tilastotiede, perusopinnot - arvosana: hyvä
   * <strong>Ylioppilastutkinto: Cygnaeus-lukio (2002-2005)</strong>
-    * Ylioppilasarvosana: magna cum laude approbatur [[Ylioppilastutkintotodistus](http://www.villesalonen.fi/todistukset/ylioppilastodistus.jpg)]
-    * Keskiarvo: 8,6 [[Lukion päättötodistus](http://www.villesalonen.fi/todistukset/lukiotodistus.jpg)]
+    * Ylioppilasarvosana: magna cum laude approbatur [[Ylioppilastutkintotodistus](/assets/ylioppilastodistus.jpg)]
+    * Keskiarvo: 8,6 [[Lukion päättötodistus](/assets/lukiotodistus.jpg)]
 
 ## Taustaa
 
