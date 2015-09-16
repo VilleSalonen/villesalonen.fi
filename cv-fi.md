@@ -20,7 +20,7 @@ permalink: /cv-suomeksi/
   * <strong>Filosofian maisteri, tietotekniikka: Jyväskylän yliopisto (2006-2012)</strong> [[Tutkintotodistus](/assets/masters_diploma.jpg), [Opintosuoritusote](/assets/opintosuoritusote.html)]
     * Pääaine: tietotekniikka, ohjelmistotekniikka - arvosana: hyvä
     * Sivuaine: teknologialiiketoiminta - arvosana: kiitettävä
-  * <strong>Luontotieteiden kandidaatti, tietotekniikka: Jyväskylän yliopisto (2006-2011)</strong> [[Tutkintotodistus]](/assets/luk-tutkinto.jpg)
+  * <strong>Luontotieteiden kandidaatti, tietotekniikka: Jyväskylän yliopisto (2006-2011)</strong> [[Tutkintotodistus](/assets/luk-tutkinto.jpg)]
     * Pääaine: Tietotekniikka, perus- ja aineopinnot - arvosana: kiitettävä
     * Sivuaine: Matematiikka, perusopinnot - arvosana: hyvä
     * Sivuaine: Tilastotiede, perusopinnot - arvosana: hyvä
