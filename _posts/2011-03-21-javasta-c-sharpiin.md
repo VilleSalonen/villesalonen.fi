@@ -1,0 +1,519 @@
+---
+layout: post
+title:  "Javasta C#:iin (In Finnish)"
+date:   2011-03-21
+---
+
+<p style="margin-bottom: 2em;"><strong>In English:</strong> This was originally written as my bachelor's thesis for Department of Mathematical Information Technology at University of Jyväskylä. I decided to publish it at my website so that it wouldn't just gather dust at the archives of university. So far I haven't translated it into English. Maybe someday I will but for now it's unfortunately only available in Finnish.</p>
+
+<em>Tämä on kirjoitettu alunperin kandidaatintutkielmakseni Jyväskylän yliopiston tietotekniikan laitokselle. Päätin julkaista sen myös täällä sivuillani, ettei tutkielma jää vain yliopiston arkistoihin pölyttymään. Tutkielmaa kirjoittaessani sain korvaamatonta ohjausapua <a href="http://users.jyu.fi/~tupepura/">Tuukka Puraselta</a> ja <a href="http://users.jyu.fi/~vesal/">Vesa Lappalaiselta</a>.</em>
+
+<em>Jos tutkielman lukemisen jälkeen kiinnostaa tutustua yksityiskohtaisemmalla tasolla kielten eroihin, suosittelen lukemaan kirjoittamani esseen <a href="http://www.villesalonen.fi/2010/javasta-c-sharpiin-erot-pintaa-syvemmalta/">Javasta C#:iin: Erot pintaa syvemmältä</a>.</em>
+
+<em><a href="http://urn.fi/URN:NBN:fi:jyu-2011120111752">Tutkielman PDF-versio</a> on saatavilla JYX-julkaisujärjestelmästä.</em>
+
+<strong>Tiivistelmä:</strong> Tutkimuksen tavoitteena on selvittää, miten ohjelmoijan Java-osaamista
+voidaan hyödyntää C#-kielen opiskelussa tai toisinpäin. Helppo siirtyminen antaisi muun muassa yrityksille enemmän joustavuutta rekrytointiin, koska palkattavan työntekijän tuntemus tietystä käytettävästä kielestä ei olisi niin tärkeää kuin käytettävän kielen nopea oppiminen valmiita taitoja hyödyntäen. Tutkimus tehtiin vertailemalla kielistä julkaistuja ohjelmointioppaita, rajanpintakuvauksia ja kielten teknisiä spesiﬁkaatioita. Tutkimuksen tulosten perusteella kielet ovat monessa suhteessa samankaltaisia, mutta erojakin on. Erot eivät ole haastavia ja Javasta C#:iin siirryttäessä ne tehostavat ohjelmointityötä. Tulosten perusteella siirtymät Javasta C#:iin
+tai toisinpäin ovat helppoja ja nopeita.
+
+<strong>Abstract:</strong> The objective of the thesis was to ﬁnd out if you can use existing
+Java experience to ease the learning of C# or vice versa. Easy moving from language
+to another would beneﬁt for example companies’ hiring decisions as the candidate’s
+knowledge of a speciﬁc language would not be as important as an ability to learn the
+language quickly by using existing experience of another language. The study was
+done by comparing published programming tutorials, application programming interfaces and technical speciﬁcations. Based on the results of the study, languages are
+similar in many ways but there are some differences. These differences are not challenging and when moving from Java to C# they increase the productivity of the programming. The results suggest that learning C# by using existing Java experience or
+vice versa is easy and fast.
+
+<strong>Avainsanat:</strong> Java, C#, ohjelmointikielet, oppiminen.
+
+<strong>Keywords:</strong> Java, C#, programming languages, learning.
+
+## Sisältö
+
+<ul>
+  <li><a href="#sec_terms">Termilista</a></li>
+  <li><a href="#sec1">1 Johdanto</a></li>
+  <li><a href="#sec2">2 Java ja C#</a>
+    <ul>
+      <li><a href="#sec2_1">2.1 Käyttöalustat</a></li>
+      <li><a href="#sec2_2">2.2 Kehitysympäristöt</a></li>
+    </ul>
+  </li>
+  <li><a href="#sec3">3 Yhtäläisyydet</a>
+    <ul>
+      <li><a href="#sec3_1">3.1 Oliotyypit</a></li>
+      <li><a href="#sec3_2">3.2 Arvotyypit</a></li>
+      <li><a href="#sec3_3">3.3 Ohjelmointisyntaksi</a></li>
+      <li><a href="#sec3_4">3.4 Virtuaalikoneet ja tavukoodi</a></li>
+    </ul>
+  </li>
+  <li><a href="#sec4">4 Erot</a>
+    <ul>
+      <li><a href="#sec4_1">4.1 Luokat ja tietueet</a></li>
+      <li><a href="#sec4_2">4.2 Muuttujatyyppien yhdenmukaisuus</a></li>
+      <li><a href="#sec4_3">4.3 Ominaisuudet</a></li>
+      <li><a href="#sec4_4">4.4 Operaattoreiden ylikuormitus</a></li>
+      <li><a href="#sec4_5">4.5 Parametrinvälitys</a></li>
+      <li><a href="#sec4_6">4.6 Delegaatit ja osoittimet</a></li>
+      <li><a href="#sec4_7">4.7 Osittaiset luokat</a></li>
+      <li><a href="#sec4_8">4.8 Lambda-lausekkeet</a></li>
+      <li><a href="#sec4_9">4.9 Suoritusteho</a></li>
+    </ul>
+  </li>
+  <li><a href="#sec5">5 Yhteenveto</a></li>
+  <li><a href="#sec_sources">Lähteet</a></li>
+</ul>
+
+## <a id="sec_terms">Termilista</a>
+
+  * <strong>Konekoodi (<em>engl. machine code</em>)</strong> Ohjelmakoodia, jonka koneen prosessori osaa suorittaa.
+  * <strong>Tavukoodi (<em>engl. bytecode</em>)</strong> Ohjelmakoodia, jota ei voi suoraan suorittaa koneen prosessorilla, vaan jota suoritetaan virtuaalikoneella.
+  * <strong>Virtuaalikone (<em>engl. virtual machine</em>)</strong> Alusta, jonka päällä tavukoodia suoritetaan. Virtuaalikone tulkkaa tavukoodin konekoodiksi.
+  * <strong>Common Language Runtime</strong> Microsoftin .NET-kielten yhteinen virtuaalikone. Esimerkiksi C#- tai Visual Basic -koodista käännetään samanlaista tavukoodia, joka suoritetaan Common Language Runtimessa.
+  * <strong>Java Virtual Machine</strong> JVM-pohjaisten kielten yhteinen virtuaalikone. Javan lisäksi esimerkiksi Scala [<a href="#source8">8</a>] ja Groovy [<a href="#source5">5</a>] käyttävät JVM:ää tavukoodin suoritukseen.
+
+## <a id="sec1">1. Johdanto</a>
+
+Olio-ohjelmointikieliä on lukuisia erilaisia. Viime aikoina dynaamisesti tyypitetyt ohjelmointikielet kuten Python ja Ruby ovat saaneet huomiota, mutta staattiset tyypitetytkään kielet eivät ole katoamassa. Microsoftin kehittämä C# ja Sunin kehittämä Java ovat kaksi suosittua staattisesti tyypitettyä olio-ohjelmointikieltä.
+
+Jyväskylän yliopistossa uusille opiskelijoille suunnatut Ohjelmointi 1- ja Ohjelmointi 2 -kurssit ovat viime vuosina järjestetty käyttäen Java-kieltä. Hyvä ohjelmoija ei kuitenkaan ole vain yhden kielen osaaja.
+
+Tutkielmani tarkoitus on selvittää, miten Java-kieltä osaavat opiskelijat pystyisivät opettelemaan mahdollisimman helposti C#-kieltä. Kartoitan ensin kielten historiaa ja käyttötarkoituksia, jonka jälkeen tutkin, mitä yhteistä ja erilaista kielillä on. Teen tutkimukseni vertailemalla kielten opetusmateriaaleja ja ohjelmakoodiesimerkkejä.
+
+<h2><a id="sec2">2. Java ja C#</a></h2>
+
+Sun Microsystemsin (myöhemmin Sun) työntekijä, James Gosling, aloitti Java-kielen kehityksen vuonna 1991. Kieli oli alunperin suunnattu käytettäväksi sittemmin unohdetussa kodin elektroniikkalaitteiden ohjaukseen tarkoitetussa *7-laitteessa (StarSeven). Jo alusta asti kielen tavoitteena oli olla prosessoririippumaton, jolloin samalla ohjelmointikielellä pystyttäisiin toteuttamaan sovelluksia useille eri alustoille. *7-laitteet suunniteltiin käytettäväksi digitaalikaapelitelevisioon liittyvissä interaktiivisissa palveluissa, joissa käyttäjät voisivat tuottaa sisältöä. Kaapelitelevisioyhtiöt vastustivat ajatusta, koska he halusivat pitää sisällön kontrolloinnin itsellään. Goslingin tiimissä oli jo 70 henkilöä, mutta selkeää käyttötarkoitusta kielelle ei ollut kaapelitelevisioyhtiöiden kieltäytymisen takia. John Gage, James Gosling, Patrick Naughton, Wayne Rosing ja Eric Schmidt kokoontuivat miettimään uutta käyttötarkoitusta ja he päätyivät tutkimaan mahdollisuuksia Javan käyttöön Internetissä. [<a href="#source2">2</a>]
+
+1990-luvun loppupuolelle asti Windows-ohjelmistot kehitettiin edelleen lähes yksinomaan C- ja C++-kielillä, joiden muun muassa vaikeammasta muistinkäsittelystä johtuva monimutkaisuus piti ohjelmistonkehityksen monille vaikeana ja hitaana prosessina. Lisäksi Microsoftin kirjastojen käyttäminen sitoi kehitetyt ohjelmat Windows-ympäristöön.
+
+Jos ohjelmistoja pystyisi käyttämään millä tahansa käyttöjärjestelmällä, ei Windowsia voisi enää markkinoida ylivoimaisella ohjelmatarjonnalla ja Microsoft menettäisi valta-asemansa. Estääkseen Javan kehittymisen merkittäväksi kilpailijaksi Microsoft teki läheisimmän yhteistyökumppaninsa, Intelin, kanssa yhteisen päätöksen kehittää kilpailija Javalle. Javan prosessoririippumattomuus oli uhka myös Intelille sen ollessa suurin prosessorivalmistaja. Microsoftin sisällä laadittiin toimintastrategia, jossa Javan kehityksestä pyrittiin tekemään vaikeampaa niin, ettei koodin kirjoittaminen yhdelle alustalle ja sen ajaminen kaikilla muilla enää onnistunutkaan. Tämä onnistui toteuttamalla Windowsille oma Java-virtuaalikone, joka oli Sunin virallista tehokkaampi, mutta käytti epästandardeja J++-nimellä kulkeneita laajennuksia. Näennäisesti Microsoft jatkoi edelleen Javan tukemista omalla alustallaan, mutta pyrki saamaan oman Windowsiin sidotun ratkaisunsa kehityksessä Javan ohi. Sun ei pitänyt Microsoftin aiheuttamasta uhasta tuotettaan kohtaan ja vuonna 1998 Sun haastoi Microsoftin oikeuteen. [<a href="#source3">3</a>] Syytteen perusteluiksi Sun esitti Microsoftin rikkoneen lisenssiehtoja, joista Sun ja Microsoft oli sopineet vuonna 1995. [<a href="#source25">25</a>]
+
+Oikeustaistelu varjosti Microsoftin Java-toteutuksen tulevaisuutta ja Microsoftin suunnittelema uusi pohja omaa korvaavaa kieltä varten lopetti J++:n jatkokehityksen. Vuonna 1999 Microsoft perusti Anders Hejlsbergin johdolla kehitysryhmän C#-ohjelmointikieltä varten. Kieli otti vaikutteita muun muassa Pascalista ja Javasta. Erityisen paljon vaikutteita on antanut Delphi, koska Hejlsberg työskenteli edellisessä työpaikassaan Borlandilla yhtenä Delphin pääkehittäjistä. [<a href="#source6">6</a>]
+
+Oikeustaistelu sovittiin oikeussalien ulkopuolella vuonna 2004 ja Microsoft maksoi 1,95 miljardia dollaria korvauksia ja lisenssimaksuja Sunille. [<a href="#source4">4</a>]
+
+### <a id="sec2_1">2.1 Käyttöalustat</a>
+
+Kuten edellisessä luvussa selvisi, Java on alusta asti suunnattu käytettäväksi useilla eri alustoilla. Näin ohjelmiston toteuttava organisaatio ei joudu sitoutumaan vain yhteen laitealustaan, jonka tulevaisuuteen organisaatio ei voi suoraan vaikuttaa. Kaikille alustoille Java-virtuaalikonetta ei ole kehitetty, mutta muun muassa Windowsin, Mac OS X:n, Linuxin ja BSD-varianttien tukeminen kattaa suuren osan maailman tietokoneista. Microsoftin virallinen tuki C#:lle kattaa Windows-työpöydän, Xbox 360 -pelikonsolin ja Windows Mobile -laitteet.
+
+C# ja siihen olennaisesti liittyvät kirjastot eivät kuitenkaan ole sidottu pelkästään Windowsiin. Mono on Novellin johtama projekti, jonka tavoitteena on kehittää useilla eri käyttöjärjestelmillä toimivat avoimen lähdekoodin versiot näistä työkaluista. Kirjoitushetkellä Monosta on toteutettu viralliset versiot Windowsille, Linuxille, Mac OS X:lle ja Solarikselle. Koska projekti ei ole Microsoftin toteuttama, kaikki Microsoftin kehittämät ominaisuudet eivät ole käytettävissä, mutta kattava osa näistä on kuitenkin jo toimivia. Myös Microsoftin Silverlight-web-teknologiasta on muilla alustoilla toimiva Mono-projektin alainen Moonlight-käännös. [<a href="#source24">24</a>]
+
+### <a id="sec2_2">2.2 Kehitysympäristöt</a>
+
+Javalle ei ole yhtä virallista kehitysympäristöä, mutta hyvin suosituksi valinnaksi on osoittautunut alunperin IBM:n VisualAge-ohjelmiston pohjalta kehitetty Eclipse Foundationin Eclipse. Eclipse itsessään on kehitetty Javalla ja sillä on mahdollista kääntää sovelluksia jokaiselle Java-virtuaalikonetta tukevalle alustalle. Toinen suosittu kehitysympäristö on Sunin NetBeans. Ominaisuuksiltaan ja käytettävyydeltään nämä kaksi ovat hyvin lähellä toisiaan.
+
+Visual Studio on Microsoftin tarjoama kehitysympäristö, jolla pystytään kehittämään muun muassa C#-ohjelmia. Siitä on olemassa kaupallinen ominaisuuksiltaan monipuolisempi versio, mutta myös harrastelijoille ja opiskelijoille suunnattu kevyempi, ilmainen Visual Studio Express. Visual Studio toimii vain Windows-ympäristössä, mutta sillä voidaan kehittää muillakin alustoilla toimivia sovelluksia käyttämällä Mono-kääntäjää.
+
+
+## <a id="sec3">3. Yhtäläisyydet</a>
+
+Java ja C# ovat molemmat staattisesti tyypitettyjä olio-ohjelmointikieliä. Ohjelma koostuu yhdestä tai useammasta luokasta. Luokat sisältävät olio- ja arvotyyppejä. Kun ohjelmakoodi on valmis, se käännetään kääntäjäohjelmalla tavukoodiksi. Tavukoodia ei pysty suoraan suorittamaan koneella, vaan se suoritetaan virtuaalikoneessa, joka tulkkaa tavukoodin käyttöjärjestelmälle sopivaksi binäärikoodiksi.
+
+
+### <a id="sec3_1">3.1 Oliotyypit</a>
+
+Oliot ovat tietorakenteita, joilla on tietokenttiä ja metodeja eli olion liittyviä funktioita. Oliotyyppiset muuttujat ovat viitteitä olion ensimmäiseen muistipaikkaan. Olion tietorakenteeseen tallennetaan olion tyyppi, arvotyyppiset muuttujat ja viitteet oliotyyppisiin muuttujiin. Lisäksi olio tarvitsee metodiensa sijainnin muistissa.
+
+### <a id="sec3_2">3.2 Arvotyypit</a>
+
+Javan ja C#:n arvotyyppiset muuttujat ovat keskenään hyvin samankaltaisia. Arvotyyppeihin säilötään totuusarvoja, yksittäisiä merkkejä ja kokonais- ja desimaalilukuja. Arvotyypit on esitelty taulukossa 1 [<a href="#source11">11</a>].
+
+<table>
+<tr><th>Java</th><th>C#</th><th>Kuvaus</th></tr>
+<tr><td><code>boolean</code></td><td><code>bool</code></td><td>Kaksiarvoinen totuusarvomuuttuja</td></tr>
+<tr><td><code>char</code></td><td><code>char</code></td><td>Unicode-merkki</td></tr>
+<tr><td><code>byte</code></td><td><code>sbyte</code></td><td>8-bittinen kokonaisluku väliltä [-128, 127]</td></tr>
+<tr><td><code>-</code></td><td><code>byte</code></td><td>8-bittinen positiivinen kokonaisluku väliltä [0, 255]</td></tr>
+<tr><td><code>short</code></td><td><code>short</code></td><td>16-bittinen kokonaisluku väliltä [-32 768, 32 767]</td></tr>
+<tr><td><code>-</code></td><td><code>ushort</code></td><td>16-bittinen positiivinen kokonaisluku väliltä [0, 65 535]</td></tr>
+<tr><td><code>int</code></td><td><code>int</code></td><td>32-bittinen kokonaisluku väliltä [-2 147 483 648, 2 147 483 647]</td></tr>
+<tr><td><code>-</code></td><td><code>uint</code></td><td>32-bittinen positiivinen kokonaisluku väliltä [0, 4 294 967 295]</td></tr>
+<tr><td><code>long</code></td><td><code>long</code></td><td>64-bittinen kokonaisluku väliltä [-922 337 203 685 477 508, 922 337 203 685 477 507]</td></tr>
+<tr><td><code>-</code></td><td><code>ulong</code></td><td>64-bittinen positiivinen kokonaisluku väliltä [0, 1 844 674 407 370 955 015]</td></tr>
+<tr><td><code>float</code></td><td><code>float</code></td><td>32-bittinen desimaaliluku väliltä [-3,402823e38, 3,402823e38]</td></tr>
+<tr><td><code>double</code></td><td><code>double</code></td><td>64-bittinen desimaaliluku väliltä [-1,79769313486232e308, 1,79769313486232e308]</td></tr>
+<caption>Taulukko 1: Javan ja C#:in arvotyypit.</caption>
+</table>
+
+Primiitivien nimet ovat kielissä lähes identtiset. Eroina totuusarvotyyppi on Javassa nimeltään <code>boolean</code> ja C#:ssa <code>bool</code> sekä 8-bittinen kokonaisluku on Javassa <code>byte</code> ja C#:ssa <code>sbyte</code>.
+
+Nimeämiserojen lisäksi C#:ssa on omat tyypit etumerkittömille (<em>engl. unsigned</em>) kokonaisluvuille. Javassa kaikki desimaali- ja kokonaisluvut voivat olla positiivisia tai negatiivisia. Jos haluamme käsitellä pelkkiä positiivisia lukuja, joudumme kirjoittamaan ohjelmakoodiin logiikan, joka tarkistaa lukujen positiivisuuden.
+
+
+### <a id="sec3_3">3.3 Ohjelmointisyntaksi</a>
+
+Hello World -esimerkki on todennäköisesti monille opiskelijoille tuttu. Java-kielellä se toteutetaan seuraavasti:
+
+    public class HelloWorld {
+      public static void main(String[] args) {
+        System.out.writeln("Hello World!");
+      }
+    }
+
+Luodaan <code>HelloWorld</code>-luokka, johon määritellään julkinen staattinen <code>main</code>-metodi. <code>main</code>-metodi ottaa parametrikseen merkkijonotaulukon, joka sisältää mahdolliset komentoriviltä annetut argumentit. <code>main</code>-metodissa kutsumme Javan järjestelmäkirjastoista <code>System.out.writeln</code>-metodia, joka tulostaa rivin <code>Hello World</code>.
+
+    public class HelloWorld {
+      public static void Main(string[] args) {
+        System.Console.WriteLine("Hello World!");
+      }
+    }
+
+Java ja C# lainaavat suuren osan syntaksistaan C-kieleltä, joten Javasta C#:iin siirtyessä ei tarvitse opetella täysin uutta syntaksia. Koodiesimerkeistä voidaan huomata, miten ohjelmat ovat lähes identtisiä. Suurin ero on, että C#-ohjelmissa luokat määritellään nimiavaruuden (<em>engl. namespace</em>) alle ja Javassa ne määritellään pakettiin (<em>engl. package</em>). Nimiavaruudet ja paketit ovat käsitteinä samoja, mutta niiden toteutukset poikkeavat [<a href="#source14">14</a>].
+
+
+### <a id="sec3_4">3.4 Virtuaalikoneet ja tavukoodi</a>
+
+Nykyajan tehokkaat tietokoneet ja korkean tason ohjelmointikielet piilottavat suuren osan siitä, mitä koneen sisällä tapahtuu ohjelmaa ajettaessa. Kun tietokoneet olivat huomattavasti nykyistä tehottomampia, ei ollut varaa tuhlata suorituksen kellojaksoja. Tällöin ohjelmat kirjoitettiin Assembly-kielellä, joka on hyvin matalan tason ohjelmointikieli. Se on tehokas, koska ohjelmoija kirjoittaa koodiin jokaisen operaation, joka ohjelman ajamisen aikana suoritetaan. Koska ohjelmointi tehdään laitetasolla, kirjoittaminen on hidasta ja virhealtista ja toiselle käyttöjärjestelmä- tai laitealustalle siirtyminen saattaa vaatia huomattavia muutoksia koodiin.
+
+Koneiden nopeutuessa yksittäisten kellojaksojen arvo ei ollut enää yhtä suuri kuin aiemmin, joten ohjelmat voitiin kirjoittaa korkeamman tason kielillä, jotka piilottavat kehittäjältä osan ohjelman monimutkaisuudesta. Korkeamman tason kielellä kirjoitetut ohjelmat muutetaan kääntäjällä Assembly-koodiksi, jota tietokone osaa suorittaa. Nyt toiselle käyttöjärjestelmä- tai laitealustalle siirtyminen on helpompaa, koska ohjelmakoodi voidaan parhaassa tilanteessa kirjoittaa vain kerran. Kun otetaan käyttöön uusi alusta, kirjoitetaan sille sopiva kääntäjä. Kääntäjä kääntää aiemmin kirjoitetun ohjelmakoodin uuden alustan ymmärtämäksi konekoodiksi. Usein siirtyminen ei kuitenkaan aivan näin yksinkertaista ole, vaan esimerkiksi Windowsista Linuxiin siirryttäessä joudutaan muokkaamaan tiedostonkäsittelyyn liittyviä osia, koska Windows ja Linux käsittelevät tiedostojärjestelmää eri tavoin.
+
+Kun ohjelmakoodi muutetaan kääntäjällä tietylle alustalle sopivaksi ohjelmaksi, sen kopioiminen toiselle alustalle ei onnistu. Jotta siirtyminen alustalta toiselle onnistuisi ilman uutta käännöstä, muun muassa C#:ia ja Javaa ei käännetä suoraan konekoodiksi, vaan tavukoodiksi. Tavukoodia ei suoraan voi suorittaa koneella kuten konekoodia, vaan väliin tarvitaan virtuaalikone, joka kääntää tavukoodin pyytämät operaatiot konekoodiksi. Kun ohjelmaa halutaan käyttää uudella alustalla, voidaan vanhaa ohjelmatiedostoa suorittaa uudelle alustalle kehitetyllä virtuaalikoneella.
+
+
+## <a id="sec4">4. Erot</a>
+
+Javasta on mahdollista siirtyä C#:iin kirjoittamalla lähes täysin samanlaista koodia kuin Javalla kirjoittaisi, mutta tällöin kielestä toiseen siirtyminen ei tuo merkittäviä etuja, koska C#:stä löytyy useita tekniikoita, jotka mahdollistavat lyhyempiä ja tehokkaampia tapoja kirjoittaa sama ohjelmalogiikka.
+
+Javan versiota 6 ja C#:n versiota 3 vertaillessani ei löytynyt ainoatakaan eroa, jossa Javan toteutus olisi teknisesti tai ohjelmointityön helppouden kannalta ylivoimainen C#:n toteutukseen verrattuna. Tästä ei kuitenkaan voi vetää johtopäätöstä, ettei Javalla ole sijaa ohjelmistokehityksessä ja että C# olisi jokaiseen tilanteeseen parempi ratkaisu. Suurin osa eroista ovat pieniä ja suhteellisen helposti kierrettäviä suoritustehon tai käyttäjäystävällisyyden kustannuksella. Lisäksi ohjelmointikielen valintaan vaikuttavat lukuisat tapauskohtaiset yksityiskohdat, joten yleispätevän suosituksen antaminen ei ole järkevää.
+
+
+### <a id="sec4_1">4.1 Luokat ja tietueet</a>
+
+Javassa primitiivimuuttujien lisäksi on olemassa vain erilaisia luokkia. C#:ssa on tietueita ja luokkia. C#:in primitiivimuuttujat on toteutettu tietueilla [<a href="#source18">18</a>]. Tietue on paremmin C-ohjelmointikielestä tuttu tietorakenne. C:ssä näihin pystyi tallentamaan vain primitiivimuuttujia: funktioita ei pystynyt kirjoittamaan suoraan tietueen sisälle. C#:ssa tietueisiin sopivat kuitenkin funktiot, konstruktorit, operaattorifunktiot ja tapahtumat. Tietueiden periminen ei ole mahdollista, mutta ne voivat kuitenkin toteuttaa rajapintoja samoin kuin luokatkin. [<a href="#source22">22</a>]
+
+Luokista poiketen tietueiden muisti varataan pinosta, eikä dynaamisen muistinhallinnan keosta. Lisäksi uuden tietueen luominen on uuden olion alustamiseen verrattuna kevyt operaatio.
+
+
+### <a id="sec4_2">4.2 Muuttujatyyppien yhdenmukaisuus</a>
+
+Javassa kaikki muuttujatyypit pystyttiin jaottelemaan primitiiveihin ja olioihin. Primitiivejä ovat kaikki, joiden muuttujatyyppi alkaa pienellä alkukirjaimella eli <code>short</code>, <code>int</code>, <code>long</code>, <code>float</code>, <code>double</code>, <code>boolean</code>, <code>char</code> ja <code>byte</code>. Primitiivimuuttujan muistiosoitteessa on suoraan muuttujan arvo. Kaikki muut muuttujatyypit ovat olioita, joiden muistiosoitteessa on viite olion sijaintiin.
+
+Microsoftin mukaan C#:ssa muuttujia ei jaotella primitiiveihin ja olioihin, vaan kaikki periytyvät object-luokasta: näin esimerkiksi <code>int</code>-muuttujilta löytyy <code>ToString</code>-metodi, ja ne pystytään antamaan argumentteina metodille, joka hyväksyy argumentikseen <code>object</code>-tyyppisen olion. Tätä kielen ominaisuutta kutsutaan muuttujatyyppien yhdenmukaisuudeksi (<em>engl. unified type system</em>). [<a href="#source23">23</a>]
+
+Jos Javassa haluttaisiin toteuttaa esimerkiksi pino-olio, johon voidaan asettaa mitä tahansa muuttujia, primitiivimuuttujat tulisi muuttaa vastaaviksi oliomuuttujiksi:
+
+    public class Stack {
+      public void push(Object input) { ... }
+      public object pop() { ... }
+
+      public void main(String[] args) {
+        Stack stack = new Stack();
+        stack.push(new Double(3.14));
+        stack.push(new Integer(17));
+      }
+    }
+
+C#:ssa sama tapahtuisi seuraavasti [<a href="#source23">23</a>]:
+
+    public class Stack {
+      public object Pop() { ... }
+      public void Push(object o) { ... }
+
+      public void main() {
+        Stack stack = new Stack();
+        stack.Push(3.14);
+        stack.Push(17);
+      }
+    }
+
+Olioita luodessa on varattava dynaamisesti muistia, suoritettava mahdolliset konstruktorimetodit ja luotava viite luotuun olioon. Arvomuuttujia käyttäessä tarvitsee vain tallentaa arvo staattisesti varattuun muistipaikkaan. Jos kaikki arvomuuttujat olisivat todellisuudessa olioita, suorituskyky kärsisi merkittävästi.
+
+
+Esimerkiksi tieteellinen laskenta C#:llä olisi hyvin hidasta, koska yhden silmukkakierroksen aikana saatetaan luoda tuhansia muuttujia. Primitiivimuuttujien tapaan tehtävä suora tallennus muuttujan muistiosoitteeseen olisi nopea operaatio, mutta uuden olion luominen on sen sijaan merkittävästi hitaampi. Suoritustehon kasvattamiseksi arvomuuttujien käsittely suoritetaan suoraan muistiosoitteita käyttämällä. Vasta asetettaessa arvomuuttujaa olioon sen arvo kopioidaan olion sisään ja asetetaan muuttuja viittaamaan luotuun olioon. Vastaavasti asetettaessa olioa takaisin arvomuuttujaan arvo kopioidaan olion sisältä ja asetetaan suoraan muistiosoitteeseen. Näitä operaatioita kutsutaan boxing- ja unboxing-operaatioiksi. [<a href="#source23">23</a>]
+
+
+### <a id="sec4_3">4.3 Ominaisuudet</a>
+
+Lähes kaikilla olioilla on attribuutteja, joiden arvoja tulee pystyä lukemaan olion ulkopuolelta. Yksi tapa toteuttaa tämä on asettaa attribuutit täysin tai osittain julkisiksi <code>public</code>- tai <code>protected</code>-avainsanoilla.
+
+Attribuuttien asettaminen julkiseksi on kuitenkin huono tapa, ellei muuttujia ole asetettu vakioksi Javan <code>final</code>- tai C#:in <code>const</code>-avainsanalla, koska muulloin niiden arvoja pystytään myös muuttamaan olion ulkopuolelta. Tällöin syötettäviä uusia arvoja ei pystytä tarkistamaan ennen asettamista, eikä kohdeolio saa itse tietoa arvojensa muuttumisesta. Tämä rikkoo myös enkapsulaatioperiaatetta, jonka perusteella ohjelman pitäisi koostua komponenteista, jotka tarjoavat muille komponenteille käytettävän rajapinnan. Jos muut komponentit käyttävät suoraan toisen komponentin sisäisiä arvoja, on niiden toteutus riippuvainen tietystä komponentin toteutuksesta ja kyseisen komponentin vaihtaminen vaihtoehtoiseen toteutukseen olisi tarpeettoman työlästä.
+
+Yleiseksi tavaksi on muodostunut asettaa attribuutti salaiseksi <code>private</code>-avainsanalla ja kirjoittaa olioon julkiset <code>getter</code>- ja <code>setter</code>-metodit, joilla arvo pystytään lukemaan ja haluttaessa myös muuttamaan. Tämä johtaa niin sanottuun boilerplate-koodiin, jossa vain pieni osa koodista liittyy varsinaiseen toteutukseen [<a href="#source15">15</a>].
+
+    public class User {
+      private String username;
+
+      public getUsername() {
+        return this.username;
+      }
+
+      public setUsername(String value) {
+        this.username = value;
+      }
+    }
+
+Valitettavasti Javassa tähän ei ole parempaa keinoa ja ainoa tapa vähentää boilerplate-koodin kirjoittamista on käyttää esimerkiksi kehitysympäristön makroja. C#:ssa sen sijaan on käytettävissä ominaisuudet (<em>engl. properties</em>):
+
+    public class User {
+      public string Username { get; set; }
+    }
+
+Tällä tavoin luokkaan määritellään yhdessä lohkossa julkinen ominaisuus, jonka sisällä <code>get</code>- ja <code>set</code>-avainsanoilla kerrotaan, mitä ominaisuuden arvoa luettaessa ja kirjoittaessa tehdään. Lohkosta voidaan jättää jompikumpi operaatio pois, jolloin ominaisuudesta tulee vain luettava tai vain kirjoitettava.
+
+Esimerkkikoodissa on hyvin yksinkertainen tapaus, jossa kaikki arvot hyväksytään ja arvon lukeminen on sallittua, eikä vaadi erikoismuotoiluja. Vaikeammissa tapauksissakin ominaisuuksista on hyötyä, koska tällöin attribuutin lukemiseen ja kirjoittamiseen liittyvä logiikka on koottuna yhdessä paikassa. Myöskään eri luokkien välillä ei ole eroja <code>getter</code>- ja <code>setter</code>-metodien nimissä: ei ole siis esimerkiksi <code>getName</code>- ja <code>writeName</code>-nimisiä metodeja, vaan arvo luetaan aina syntaksilla <code>olio.Ominaisuus</code> ja uusi arvo asetetaan syntaksilla <code>olio.Ominaisuus = uusiArvo</code>.
+
+    private string email;
+    public string Email {
+      get { return this.email; }
+      set {
+        if ( Validator.validateEmail(value) ) {
+          this.email = value;
+        }
+      }
+    }
+
+Yllä olevassa esimerkissä ominaisuuden arvoa asettaessa sille tehdään tarkistus ja vasta sen läpäistyään argumenttina annettu arvo asetetaan ominaisuudelle. Yleisen tavan mukaisesti salainen attribuutti ja julkinen ominaisuus ovat saman nimisiä, mutta ominaisuuden nimi on kirjoitettu isolla alkukirjaimella.
+
+
+### <a id="sec4_4">4.4 Operaattoreiden ylikuormitus</a>
+
+Operaattoreiden ylikuormituksella (<em>engl. operator overloading</em>) kehittäjän on mahdollista määritellä, miten kahden olion väliset aritmeettiset operaatiot ja yhtäsuuruusvertailut toteutetaan. Javassa operaattoreiden ylikuormitus ei ole kehittäjän määriteltävissä, mutta Sun on toteuttanut erikoistapauksena merkkijonojen yhdistämisen <code>+</code>-operaattorilla.
+
+Kuormittamisen puuttumisen takia esimerkiksi matriisien yhteen- ja kertolaskun toteuttaminen on Javassa tehtävä erityisillä, mielivaltaisesti nimetyillä metodeilla, jotka ottavat parametrikseen toisen matriisin. Jo yksinkertaisesta matemaattisesta lausekkeesta tulee monimutkainen.
+
+    public class Matrix {
+      public Matrix add(Matrix matrix) { /* ... */ }
+      public Matrix multiply(Matrix matrix) { /* ... */ }
+
+      public void main(String[] args) {
+        Matrix matrix1 = new Matrix(/* ... */);
+        Matrix matrix2 = new Matrix(/* ... */);
+        Matrix matrix3 = new Matrix(/* ... */);
+
+        matrix1.add(matrix2).multiply(matrix3);
+      }
+    }
+
+C#:n kanssa operaattoreiden ylikuormitus onnistuu määrittelemällä luokkaan staattinen metodi <code>operatorX</code>, jossa <code>X</code> on ylikuormitettava operaattori. Lista mahdollisesti ylikuormitettavista operaattoreista löytyy Microsoft Developer Network -palvelusta [<a href="#source20">20</a>].
+
+    public class Matrix {
+      public static Matrix operator+(Matrix m1, Matrix m2) { ... }
+      public static Matrix operator*(Matrix m1, Matrix m2) { ... }
+
+      public void main() {
+        Matrix matrix1 = new Matrix(/* ... */);
+        Matrix matrix2 = new Matrix(/* ... */);
+        Matrix matrix3 = new Matrix(/* ... */);
+
+        matrix1 = (matrix1 + matrix2) * matrix3;
+      }
+    }
+
+Matriisilaskenta yllä olevalla koodilla ei ole tehokasta. Jokaista laskutoimitusta kohden luodaan uusi matriisiolio. Esimerkiksi <code>matrix1 + matrix2</code> luo uuden olion, joka kerrotaan <code>matrix3</code>-oliolla, jolloin syntyy jälleen uusi olio. Jos alkuperäisiä matriiseja ei ole tarvetta säilyttää, kannattaa esimerkiksi kertolaskun tulokset sijoittaa suoraan kerrottavaan matriisiin. Periaatteessa tämän voi toteuttaa operaattoreiden ylikuormituksellakin, jos kuormittavassa metodissa lasketaan lopputulos operandiin. Tämä tosin on epäloogista käyttäjän kannalta, koska hän ei pysty huomaamaan lausekkeesta <code>matrix1 * matrix2</code>, että <code>matrix2</code>:n arvo muuttuu. Koska operaattoreiden ylikuormituksella ei voi saavuttaa muuta kuin parempaa luettavuutta, olisi tällaisen ylikuormituksen tekeminen mieletöntä.
+
+Sinänsä operaattoreiden ylikuormitus ei ole kuin kuorrutusta syntaksin päälle, mutta sillä on mahdollista yksinkertaistaa ja lyhentää monimutkaisia lausekkeita. Etenkin matemaattista ohjelmistoa kehittäessä laskukaavat näyttävät samankaltaisemmilta paperilla ja ohjelmakoodissa. Lisäksi vähempi koodimäärä ja loogisempi muotoilu edesauttaa virheettömyyttä.
+
+Operaattoreita ylikuormittaessa on tärkeää muistaa tehdä vain loogisia ylikuormituksia: mitä toiminnallisuutta haluttaisiin esimerkiksi kuvata merkkijonojen <code>-</code>-operaattoria kuormittaessa? Epäloogisilla ylikuormituksilla on helppo tehdä koodista vaikealukuista.
+
+
+### <a id="sec4_5">4.5 Parametrinvälitys</a>
+
+Javassa parametrinvälitys hoidetaan aina arvonvälitysmenetelmällä (<em>engl. pass by value</em>). Tämä tarkoittaa sitä, että kun metodia kutsuttaessa annetaan argumenttina jokin arvo, se kopioidaan metodin parametrille.
+
+Arvomuuttujilla tilanne on yksinkertainen. Jos metodille annetaan argumenttina <code>3</code> ja metodissa tätä arvoa kasvatetaan, muutos näkyy ainoastaan metodin määrittelemällä näkyvyysalueella.
+
+Olioiden kanssa tilanne on valitettavasti monimutkaisempi. Jos esimerkkimetodilla <code>changeReference</code> on parametri <code>greetings</code> ja kutsuvasta metodista annetaan argumentti <code>greetingsArgument</code>, parametriin kopioidaan arvoksi sama viite kuin argumentilla. Jos <code>changeReference</code>-metodissa viite asetetaan osoittamaan uuteen olioon, parametrin arvo vaihtuu, mutta argumentin arvo säilyy ennallaan, koska parametrin arvo oli vain kopio argumentista: ei siis sama viite. Jos esimerkkimetodissa useReference kutsutaan parametriolion <code>append</code>-metodia argumentilla <code>Thanks!</code>, sekä parametri että argumentti osoittavat kuitenkin edelleen samaan olioon, joten sekä suorittaja että vastaanottaja näkevät <code>append</code>-metodilla tehdyn muutoksen.
+
+    public class ReferenceTest {
+      private static void changeReference(StringBuffer greetings) {
+        greetings = new StringBuffer("Thanks!");
+      }
+  
+      private static void useReference(StringBuffer greetings) {
+        greetings.append(" Thanks!");
+      }
+
+      public static void main(String[] args) {
+        StringBuffer greetingsArgument = new StringBuffer("Hello!");
+        System.out.println(greetingsArgument.toString());
+        changeReference(greetingsArgument);
+        System.out.println(greetingsArgument.toString());
+    
+        StringBuffer goodbyeArgument = new StringBuffer("Goodbye!");
+        System.out.println(goodbyeArgument.toString());
+        useReference(goodbyeArgument);
+        System.out.println(goodbyeArgument.toString());
+      }
+    }
+
+Ohjelman tulosteeksi saadaan:
+
+    Hello!
+    Hello!
+    Goodbye!
+    Goodbye! Thanks!
+
+C#:ssa parametrinvälityksessä käytetään oletuksena samaa arvonvälitysmenetelmää, mutta tarvittaessa parametrit voidaan välittää myös viitteenvälitysmenetelmällä (<em>engl. pass by reference</em>). Tällöin kutsuttu metodi voi muuttaa annetun viitteen arvoa. Viitteenvälitys valitaan käyttöön <code>ref</code>-avainsanalla. <code>Ref</code>-avainsanaa on silloin käytettävä sekä metodin määrittelyssä että metodia kutsuttaessa, jottei metodi pääse yllättäen muuttamaan viitteen arvoa ilman kutsun suorittajan erillistä lupaa.
+
+    public class ReferenceTest {
+      public static void setThanks(StringBuilder input) {
+        input = new StringBuilder("Thanks!");
+      }
+
+      public static void setThanksByReference(ref StringBuilder input) {
+        input = new StringBuilder("Thanks!");
+      }
+
+      public static void Main(string[] args) {
+        StringBuilder greetings = new StringBuilder("Hello!");
+        System.Console.WriteLine(greetings.ToString());
+        setThanks(greetings);
+        System.Console.WriteLine(greetings.ToString());
+        setThanksByReference(ref greetings);
+        System.Console.WriteLine(greetings.ToString());
+      }
+    }
+
+Ohjelman tulosteeksi saadaan:
+
+    Hello!
+    Hello!
+    Thanks!
+
+
+### <a id="sec4_6">4.6 Delegaatit ja osoittimet</a>
+
+Javassa ja C#:ssa metodeihin viittaaminen on toteutettu eri tavalla. Esimerkiksi graafisia käyttöliittymiä ohjelmoitaessa komponentille määritetään, mikä metodi sen tulee ajaa tietyn tapahtuman ilmetessä. Javassa suoraan metodiin viittaaminen ei ole mahdollista. Tämä kierretään yleisesti ohjelmoimalla kuuntelijarajapinnan toteuttava olio, joka sisältää tapahtuman ilmetessä ajettavan metodin. Alla esimerkki, kuinka painikkeen painallustapahtumaan liitetään kutsuttava metodi:
+
+    loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+      public void mouseClicked(java.awt.event.MouseEvent evt) {
+        loginButtonMouseClicked(evt);
+      }
+    });
+
+C#:ssa funktioihin viittaaminen onnistuu delegaateilla. C#:ssa on viitteiden ja delegaattien lisäksi myös esimerkiksi C-kielestä tutut osoittimet. Osoittimilla pystytään viittaamaan suoraan muistipaikkaan, jossa on primitiivimuuttuja tai tietue, joka sisältää primitiivimuuttujia [<a href="#source21">21</a>].
+
+
+
+### <a id="sec4_7">4.7 Osittaiset luokat</a>
+
+Osittaiset luokat (<em>engl. partial classes</em>) mahdollistavat luokan jakamisen useampaan eri lähdekooditiedostoon. Näin esimerkiksi graafisissa käyttöliittymissä itse käyttöliittymän asettelu- ja muotoilukoodi voidaan eriyttää sen toiminnallisuutta kuvaavasta koodista ja lopputuloksena on selkeämpi kokonaisuus, jolloin kehittäjä voi keskittyä kulloinkin olennaiseen osaan.
+
+Javassa osittaisia luokkia ei ole. Siksi yhden ikkunan ohjelmakoodissa on sekä käyttöliittymä komponenttien sijoittelu ja muotoilu että ikkunan käyttöliittymän logiikkakoodi. Esimerkiksi NetBeansillä käyttöliittymää kehittäessä tätä koodin paljoutta yritetään piilottaa tekemällä sijoittelu ja muotoilu niiden tekemiseen tarkoitetulla apuohjelmalla, eikä suoraan koodilla. Oletuksena NetBeans piilottaa tämän apuohjelman luoman koodin ja estää sen muokkaamisen. Muotoilu- ja sijoittelukoodi on kuitenkin samassa luokassa käyttöliittymän logiikan kanssa ja luokan koko kasvaa.
+
+C#:ssa muotoilu ja sijoittelu sijoitetaan omaan tiedostoonsa, jota käyttäjän ei pitäisi joutua muokkaamaan suoraan ollenkaan. Luokan toiseen osaan jää vain käyttöliittymän logiikkaan liittyvä koodi. Osittaiset luokat sopivat myös muualle. Käyttöliittymäohjelmointi on vain yksi esimerkki niiden käytöstä.
+
+
+
+### <a id="sec4_8">4.8 Lambda-lausekkeet</a>
+
+C#:n lambda-lausekkeet ovat anonyymejä funktioita. [<a href="#source19">19</a>] Anonyymit funktiot ovat nimensä mukaisesti nimettömiä funktioita. Anonyymejä funktioita käytetään usein tilanteissa, joissa funktiota ei tarvitse pystyä kutsumaan muualta ja funktio on suhteellisen yksinkertainen. Esimerkki tällaisesta tilanteesta on listojen läpikäynti tilanteessa, jossa listasta etsitään tietyn ehdon täyttäviä alkioita tai halutaan järjestää alkiot jotenkin muuten kuin alkioiden luonnolliseen järjestykseen. Alla esimerkki, miten kokonaislukutaulukosta voidaan laskea parittomien alkioiden lukumäärä:
+
+    public class LambdaExpressionExample {
+      public static void Main(string[] args) {
+        int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+        int oddNumbers = numbers.Count(n => n % 2 == 1);
+        System.Console.WriteLine(oddNumbers);
+      }
+    }
+
+<code>Count</code>-metodille ei tarvitse antaa tyyppiparametriä. C#:in tyypin määrittely (<em>engl. type inference</em>) pystyy päättelemään geneerisen metodin tyypin argumenttien perusteella. [<a href="#source16">16</a>] <code>Count</code>-metodi on määritelty muodossa <code>Enumerable.Count<TSource> Method (IEnumerable<TSource>, Func<TSource, Boolean>)</code>.	[<a href="#source17">17</a>] Esimerkin lista <code>numbers</code> on tyyppiä <code>IEnumerable<int></code>, joten anonyymin funktion geneerinen tyyppi <code>Func<TSource, Boolean></code> pystytään päättelemään eksplisiittiseksi tyypiksi <code>Func<int, Boolean></code>.
+
+Javassa ei ole mahdollista tehdä lambda-lausekkeita. [<a href="#source10">10</a>] Lähes samanlaisen toiminnallisuuden voi tehdä käyttämällä anonyymejä luokkia. Kuten yllä olevassa C#-esimerkissä, on myös Java-esimerkin <code>count</code>-metodi geneerinen eli samalla metodilla voitaisiin laskea esimerkiksi oliolistasta niiden olioiden lukumäärä, joiden attribuutit täyttävät halutun ehdon. C#:sta poiketen Javassa geneeriset tyypit voivat olla vain oliotyyppejä. [<a href="#source1">1</a>]
+
+    interface Predicate<T> { public boolean apply(T type); }
+
+    public class AnonymousClassExample {
+      public static <T> int count(T[] values, Predicate<T> predicate) {
+        int amount = 0;
+        for (T value : values) {
+          if (predicate.apply(value)) {
+            amount++;
+          }
+        }
+        return amount;
+      }
+
+      public static void main(String[] args) {
+        Integer[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+        int oddNumbers = count(numbers, new Predicate<Integer>() {
+          public boolean apply(Integer number) {
+            return number % 2 == 1;
+          }
+        });
+        System.out.println(oddNumbers);
+      }
+    }
+
+
+### <a id="sec4_9">4.9 Suoritusteho</a>
+
+Java ja C# ovat molemmat virtuaalikoneessa ajettavia kieliä. Tästä voisi nopeasti vetää johtopäätöksen, että molemmat ovat hitaampia C:hen ja C++:aan verrattuna, koska niillä kirjoitetut ohjelmat käännetään suoraan binäärikoodiksi. Tilanne ei kuitenkaan ole aivan niin yksinkertainen. Esimerkiksi IBM:n suorittamien testien perusteella Javan muistinvaraus on C++:n muistinvarausta nopeampaa, vaikka C++:ssa ohjelmoija voi päättää, varataanko tila keosta vai pinosta [<a href="#source9">9</a>].
+
+Vaikka korkeamman tason kielillä ohjelmoijan mahdollisuudet yksityiskohtaiseen suoritustehon virittelyyn ovatkin pienemmät, ei tämä ole välttämättä suora osoitus suoritustehon laskemisesta. C:täkin voitaisiin pitää Assemblyä hitaampana kielenä, koska C on välitaso ja ohjelmoijan kirjoittaessa suoraan Assembly-kieltä hän voi tehdä kaikki hyväksi toteamansa optimoinnit, joita kääntäjä ei osaa tehdä.
+
+Kannattaa kuitenkin muistaa, että ohjelmien suoritustehovaatimukset vaihtele-vat ohjelmien luonteesta riippuen. Esimerkiksi verkkokauppaa tehdessä suuri osa käyttäjän kokemasta hitaudesta johtuu HTTP-yhteyksien hitaudesta ja tähän ei voi ohjelmointikielen valinnan vaikuttaa. Donald Knuth, eräs tietotekniikan alan suurista tutkijoista, on todennut ennenaikaisen optimoinnin olevan kaiken pahan alku ja juuri. Hän teki tämän väitteen jo vuonna 1974 [<a href="#source13">13</a>].
+
+Harvaa ohjelmaa kirjoitetaan tilanteessa, jossa aikaa ja rahaa olisi tarjolla loputtomasti. Jos rupeaa alusta asti kirjoittamaan käyttöliittymärutiineja C:llä tai jopa Assemblyllä, venyy kehitysaika varmasti Javaan ja C#:iin verrattuna, koska näille on tarjolla hyvin tehokkaita käyttöliittymäkirjastoja ja -työkaluja. Jos epäilee, että suoritusteho ei korkeamman tason kielillä välttämättä riitä, kannattaa kirjoittaa ensin prototyyppi korkeamman tason kielillä ja ajaa tämä kattavien suoritustehotestin läpi. Todennäköisesti pahimmassakin tapauksessa lisäsuoritustehoa vaativat ohjelman osat ovat pieni osa kokonaisuudesta. Nämä osat voidaan sitten optimoida esimerkiksi hiomalla algoritmit huippuunsa ja jos tarvetta oikeasti vielä tässä vaiheessa on, kirjoittaa ne uudestaan alemman tason kielillä ja liittää osaksi muuta ohjelmaa.
+
+
+
+## <a id="sec5">5. Yhteenveto</a>
+
+Maailmassa on valtava määrä ohjelmointikieliä. Eri ohjelmointikielet on suunniteltu erilaisia tarpeita varten. Vanhoja ohjelmointikieliä korvataan jatkuvasti uusilla. Vain yhden ohjelmointikielen osaaminen ei siis ole kannattavaa.
+Tutkimuksen tarkoituksena oli selvittää, voidaanko Java-ohjelmointikielen osaamista hyödyntää C#-ohjelmointikielen opiskelussa. Tutkimuksessa selvitettiin ohjelmointikielten yhtäläisyyksiä ja eroja ohjelmoijan näkökulmasta.
+
+Yhtäläisyyksiä ja eroja selvitettiin vertaamalla etupäässä Microsoftin sekä aiemmin Sunin, mutta nykyään Oraclen tekemiä kielten ohjelmointioppaita, rajapintakuvauksia ja kielten teknisiä spesifikaatioita. Näiden lisäksi materiaalina käytettiin myös kolmansien osapuolten artikkeleita Javasta, C#:sta ja ohjelmoinnista yleisesti.
+
+Tutkimuksen tulosten perusteella Javan osaamista voidaan käyttää hyvin C#:in opiskelussa. Molemmat kielet käyttävät olio-ohjelmoinnin paradigmaa, yhtälaista syntaksia ja virtuaalikonetta tavukoodin tulkitsemisessa käytettävän tietokoneen ymmärtämäksi konekoodiksi. Eroja kielten välillä ovat muun muassa C#:in käyttämät tietueet primiitimuuttujien kantaluokkana, virtuaalikoneiden saatavuus eri käyttöjärjestelmissä sekä C#:in tuki delegaateille ja lambda-lausekkeille.
+
+Tutkimusten tulosten perusteella Javaa osaava ohjelmoija voi siirtyä helposti käyttämään C#:ia ja vastaavasti C#:ia osaava ohjelmoimaan Javaa. Tästä on hyötyä erityisesti yritysmaailmassa, jossa on tätä kirjoittaessa pula tietoteknologian osaajista Tietotekniikan liiton toiminnanjohtaja Robert Serénin mukaan [<a href="#source12">12</a>]. Esimerkiksi C#-osaajaa etsivän yrityksen ei tarvitse tutkimusten tulosten mukaan hylätä Java-osaajaa, vaan hakija pystyy todennäköisesti omaksumaan uuden kielen nopeasti.
+
+Voin vahvistaa tutkimusten tulosten pitävän paikkaansa omakohtaisten kokemuksieni perusteella. Keväällä 2010 vaihdoin Java-ohjelmointitehtävistä C#:ia käyttävään yritykseen. Siirtyminen tuntui helpolta ja se onnistui nopeasti.
+
+
+
+## <a id="sec_sources">Lähteet</a>
+
+
+
+[<a id="source1">1</a>] Allen, E., Diagnosing Java code: Java generics without the pain, Part 1, saatavilla <a href="http://www.ibm.com/developerworks/java/ library/j-djc02113.html">WWW-muodossa</a>, 1.3.2011.
+
+[<a id="source2">2</a>] Byous, J., Java Technology: The Early Years, saatavilla <a href="http://web.archive.org/web/20080530073139/http://java.sun.com/features/1998/05/birthday.html">WWW-muodossa</a>, 24.1.2011.
+
+[<a id="source3">3</a>] CNET News, Microsoft’s Holy War On Java, saatavilla <a href="http://news.cnet.com/Microsofts-holy-war-on-Java/2009-1001_3-215854.html">WWW-muodossa</a>, 23.9.2008.
+
+[<a id="source4">4</a>] CNET News, Sun settles with Microsoft, announces layoffs, saatavilla	<a href="http://news.cnet.com/ Sun-settles-with-Microsoft,-announces-layoffs/2100-1014_3-5183848.html">WWW-muodossa</a>, 7.12.2008.
+
+[<a id="source5">5</a>] Codehaus Foundation, Groovy - An agile dynamic language for the Java Platform, saatavilla <a href="http://groovy.codehaus.org/">WWW-muodossa</a>, 24.1.2011.
+
+[<a id="source6">6</a>] Computer World, The A-Z Of Programming Languages: C#, saatavilla <a href="http://www.computerworld.com.au/article/ 261958/-z_programming_languages_c?p=1&fp=&fpid=">WWW-muodossa</a>, 6.12.2008.
+
+[<a id="source7">7</a>] DedaSys LLC, Programming Language Popularity, saatavilla <a href="http://langpop.com/">WWW-muodossa</a>, 25.1.2011.
+
+[<a id="source8">8</a>] École Polytechnique Fédéralede Lausanne, The Scala Programming Language, saatavilla <a href="http://www.scala-lang.org/node/25">WWW-muodossa</a>, 24.1.2011.
+
+[<a id="source9">9</a>] IBM developerWorks, Java theory and practice: Urban performance legends, revisited, saatavilla <a href="http://www.ibm.com/developerworks/java/library/j-jtp09275.html">WWW-muodossa</a>, 18.1.2011.
+
+[<a id="source10">10</a>] Java Community Process, JSR 335: Lambda Expressions for the JavaTM Pro- gramming Language, saatavilla <a href="http://jcp.org/en/jsr/detail?id=335">WWW-muodossa</a>, 1.3.2011.
+
+[<a id="source11">11</a>] Jones, A. & Freeman, A., 2003. C# for Java Developers. Redmond, Washington: Microsoft Press.
+
+[<a id="source12">12</a>] Kaleva,	Oikeanlaisista	it-osaajista	ollut	pulaa,	saatavilla	<a href="http://www.kaleva.fi/uutiset/oikeanlaisista-it-osaajista-ollut-pulaa/889837">WWW-muodossa</a>, 21.2.2011.
+
+[<a id="source13">13</a>] Knuth, D.E., Structure Programming with go to Statements, saatavilla <a href="http://www.univasf.edu.br/~marcus.ramos/pc-2008-2/p261-knuth.pdf">WWW-muodossa</a>, 25.1.2011.
+
+[<a id="source14">14</a>] Kurniawan B., Comparing C# and Java, saatavilla <a href="http://ondotnet.com/pub/a/dotnet/2001/06/07/csharp_java. html?page=1">WWW-muodossa</a>, 24.1.2011.
+
+[<a id="source15">15</a>] Lämmel, R. & Jones, S.P., Scrap Your Boilerplate: A Practical Design Pattern for Generic Programming, saatavilla <a href="http://homepages.cwi.nl/~ralf/tldi02.pdf">WWW-muodossa</a>, 24.1.2011.
+
+[<a id="source16">16</a>] Microsoft Developer Network, C# Language Specification, luku 7.5.2, saa- tavilla <a href="http://msdn.microsoft.com/en-us/library/ms228593.aspx">WWW-muodossa</a>, 1.3.2011.
+
+[<a id="source17">17</a>] Microsoft Developer Network, Enumerable.Count<TSource> Method (IEnume- rable<TSource>, Func<TSource, Boolean>), saatavilla <a href="http://msdn.microsoft.com/en-us/library/bb535181.aspx">WWW-muodossa</a>, 1.3.2011.
+
+[<a id="source18">18</a>] Microsoft Developer Network, Int32 Structure, saatavilla <a href="http://msdn.microsoft.com/en-us/library/system.int32.aspx">WWW-muodossa</a>, 24.1.2011.
+
+[<a id="source19">19</a>] Microsoft Developer Network, Lambda Expressions, saatavilla <a href="http://msdn.microsoft.com/en-us/library/bb397687.aspx">WWW-muodossa</a>, 1.9.2009.
+
+[<a id="source20">20</a>] Microsoft Developer Network, Overloadable Operators, saatavilla <a href="http://msdn.microsoft.com/en-us/library/8edha89s(VS.71).aspx">WWW-muodossa</a>, 24.1.2011.
+
+[<a id="source21">21</a>] Microsoft Developer Network, Pointer Types (C#), saatavilla <a href="http://msdn.microsoft.com/en-us/library/y31yhkeb(VS.80).aspx">WWW-muodossa</a>, 3.9.2009.
+
+[<a id="source22">22</a>] Microsoft Developer Network, struct (C#), saatavilla <a href="http://msdn.microsoft.com/en-us/library/ah19swz4(VS.71).aspx">WWW-muodossa</a>, 1.12.2008.
+
+[<a id="source23">23</a>] Microsoft Developer Network, Type system unification, saatavilla <a href="http://msdn.microsoft.com/en-us/library/aa664638(VS.71).aspx">WWW- muodossa</a>, 7.1.2009.
+
+[<a id="source24">24</a>] Mono Project, Mono, saatavilla <a href="http://www.mono-project.com/">WWW-muodossa</a>, marraskuu 2008.
+
+[<a id="source25">25</a>] SunWorld, Microsoft licenses Java, saatavilla <a href="http://sunsite.uakom.sk/sunworldonline/swol-12-1995/swol-12-microsoft.html">WWW-muodossa</a>, 2.5.2009.
