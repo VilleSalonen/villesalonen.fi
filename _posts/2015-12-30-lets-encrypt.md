@@ -77,7 +77,7 @@ In plain English this meant that the browser was sending secure HTTPS requests b
 
 By this time the DNS changes had propagated so I requested a new certificate with both villesalonen.fi and www.villesalonen.fi domains. Let's Encrypt's manual wizard asked whether I wanted to expand the current certificate with new subdomain and I confirmed the change. Now I had working SSL connection for both domains.
 
-Before deeming the operation successful I decided to have a final look on what Chrome thought of my certificate and I was disappointed to notice that according to Chrome the server used obsolete cipher suite. After a quick googling I found Mozilla's recommended SSL configurations for the most common server software from [Mozilla SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/). After solving the problem #6 with these changes my final nginx configuration looked like this:
+Before deeming the operation successful I decided to have a final look on what Chrome thought of my certificate and I was disappointed to notice that according to Chrome the server used obsolete cipher suite. After a quick googling I found Mozilla's recommended SSL configurations for the most common server software from [Mozilla SSL Configuration Generator](https://mozilla.github.io/server-side-tls/ssl-config-generator/). The generated configuration had ssl_ciphers values in correct order which made Chrome a happy camper. After solving the problem #6 with these changes my final nginx configuration looked like this:
 
     server {
         listen 443 ssl;
