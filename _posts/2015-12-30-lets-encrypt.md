@@ -1,3 +1,8 @@
+---
+layout: post
+title:  "Let's Encrypt"
+date:   2015-12-30
+---
 
 I've been waiting for [Let's Encrypt](https://letsencrypt.org/) for a long time. For those of you, who haven't heard of it, Let's Encrypt is a free service providing SSL certificates so everyone can afford to protect their websites using SSL. It was finally released a short while ago and now on my Christmas vacation I had time to play around with it.
 
