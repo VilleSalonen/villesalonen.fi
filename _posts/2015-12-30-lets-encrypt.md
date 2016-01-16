@@ -8,7 +8,7 @@ I've been waiting for [Let's Encrypt](https://letsencrypt.org/) for a long time.
 
 There were some gotchas and problems so I decided to write a short article how I overcame them.
 
-This website is running on [Digital Ocean's](https://www.digitalocean.com/) virtual machine with Ubuntu 15.10. Some Linux distributions hae Let's Encrypt software available from the distribution's own repositories but I ended up cloning from [the master branch](https://github.com/letsencrypt/letsencrypt).
+This website is running on [Digital Ocean's](https://www.digitalocean.com/) virtual machine with Ubuntu 15.10. Some Linux distributions have Let's Encrypt software available from the distribution's own repositories but I ended up cloning from [the master branch](https://github.com/letsencrypt/letsencrypt).
 
     git clone https://github.com/letsencrypt/letsencrypt
     cd letsencrypt/
