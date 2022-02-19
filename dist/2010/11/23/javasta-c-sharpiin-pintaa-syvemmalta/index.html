@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Javasta C#:iin: Erot pintaa syvemmältä (In Finnish)</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Software Designer, Photographer">
+    <link rel="canonical" href="http://villesalonen.fi/2010/11/23/javasta-c-sharpiin-pintaa-syvemmalta/">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+
+</head>
+
+
+    <body>
+
+    <header class="site-header">
+
+  <div class="wrap">
+
+    <a class="site-title" href="/">Ville Salonen</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           viewBox="0 0 18 15" enable-background="new 0 0 18 15" xml:space="preserve">
+          <path fill="#505050" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0
+            h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#505050" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484
+            h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#505050" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0
+            c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+      <div class="trigger">
+        <a class="page-link" href="/">CV</a>
+        <a class="page-link" href="/writings/">Writings</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrap">
+      <div class="post">
+
+  <header class="post-header">
+    <h1>Javasta C#:iin: Erot pintaa syvemmältä (In Finnish)</h1>
+    <p class="meta">Nov 23, 2010</p>
+  </header>
+
+  <article class="post-content">
+  <p><em>Tämä essee on kirjoitettu alunperin Jyväskylän yliopiston Ohjelmointikielten periaatteet -kurssille. Päätin julkaista sen myös täällä sivuillani, ettei essee jää vain kurssinjärjestäjän pöytälaatikkoon pölyttymään.</em></p>
+
+<p><em><strong>PÄIVITYS:</strong> Nyt sivuillani on julkaistu myös kandidaatintutkielmani <a href="/2011/03/21/javasta-c-sharpiin/"><strong>Javasta C#:iin</strong></a>.</em></p>
+
+<h2 id="johdanto">Johdanto</h2>
+
+<p>Sain Vesa Lappalaiselta aiheeksi kandidaatintutkielmalleni Javan ja C#:in erojen selvittämisen. Koska tutkielman tarkoituksena oli kattaa suurin osa tavallisessa käytössä vastaan tulevista eroista, ei mihinkään yhteen tai muutamaan aiheeseen voinut tutustua erityisen tarkasti. Niinpä Ohjelmointikielten periaatteet -kurssin esseen aihetta miettiessä ajatukseni palasivat Javan ja C#:in pariin.</p>
+
+<p>Esseessäni aion perehtyä neljään minua kiinnostavaan aiheeseen:</p>
+
+<ul>
+  <li>Anonyymit funktiot ja delegaatit. Javassa lähes kaikki ovat olioita. Tästä johtuen yksittäisten funktioiden antaminen esimerkiksi järjestelijäoliollle ei onnistu suoraan, vaan funktio on paketoitava olion metodiksi. Miksi näin on? Onko tästä etua suoritusteholle, virtuaalikoneen toteutukselle vai onko kyse vain huonosta suunnittelusta?</li>
+  <li>C#:in yhtenäinen tyyppijärjestelmä. Kaikki ovat C#:issa olioita: myöskin kokonais- ja liukuluvut. Javassa kokonaisluvuille on olemassa primitiivityyppi int ja oliotyyppi Integer. Tämä aiheuttaa ongelmaa esimerkiksi listoja käsitellessä, koska listat ottavat alkioikseen vain olioita, joten int-tyyppiset kokonaisluvut on paketoitava jälleen olion sisään. Miksi näin on? Häviääkö C#:in toteutusratkaisu Javalle nopeudessa?</li>
+  <li>Operaattoreiden ylikuormitus. Javaan ei haluttu toteuttaa operaattoreiden ylikuormitusta C++:n kanssa ilmenneiden ongelmien takia. Oliko tämä pelko perusteltua? Ilmenevätkö C++:n ongelmat myös C#:ssa?</li>
+  <li>Javassa poikkeuksia on kahdenlaisia: tarkistettavia ja ajonaikaisia. C#:ssa kaikki poikkeukset ovat ajonaikaisia. Mitä tämä tarkoittaa? Onko kahdenlaisista poikkeuksista hyötyä?</li>
+</ul>
+
+<p>Tavoitteenani on, että tämä essee toimisi erinomaisena jatkoluettavana kandidaatintutkielmalleni niille, jotka haluavat perehtyä vielä tarkemmin kielten välisiin eroihin. Kandidaatintutkielma on pituudeltaan rajoitettu sellaiseksi, ettei kaikkia yksityiskohtia ole mielekästäkään käsitellä. Lisäksi käytän työelämässäni C#:ia, joten lisätutustuminen kyseiseen kieleen auttaa sekä akateemisia että työelämän tavoitteitani.</p>
+
+<h2 id="delegaatit-ja-anonyymit-funktiot">Delegaatit ja anonyymit funktiot</h2>
+
+<p>Anonyymit funktiot ovat funktioita, joille ei ole määritetty tunnistetta. Anonyymit funktiot eivät ole uusi keksintö, vaan Alonzo Church esitteli ne jo 1936 kehittäessään lambda-laskennan, jossa kaikki laskenta tehdään anonyymeillä funktioilla. Ohjelmointikielissä anonyymejä funktioita käytetään etenkin funktionaalisissa ohjelmointikielissä, mutta ne löytyvät myös esimerkiksi C#:ista ja JavaScriptistä. Java ei niitä tosin tue.</p>
+
+<p>Ennen kuin perehdyn tarkemmin syihin, miksi C# tukee anonyymejä funktioita ja Java ei, on hyvä pysähtyä miettimään hetkeksi, miksi kukaan haluaisi käyttää anonyymejä funktioita moderneissa olio-ohjelmointikielissä. Esimerkiksi kokoelmien alkioiden suodattaminen ja järjestäminen on usein kätevää tehdä anonyymillä funktiolla. Javassa nykyisen käytännön mukaisesti järjestäminen muuhun kuin olioiden luonnolliseen järjestykseen hoidetaan tekemällä funktio-olio eli niin sanottu funktori, joka toteuttaa Comparator<T>-rajapinnan vaatiman järjestysmetodin. Funktori annetaan edelleen staattiselle Collections.sort-metodille, joka lopulta hoitaa järjestämisen. Mielestäni tämä kuitenkin katkaisee ikävästi luontevan ohjelmointivauhdin ja pakottaa ohjelmoijan hyppäämään päässään toiselle abstraktiotasolle. Lisäksi mielestäni funktiot, jotka tekevät usean eri abstraktiotason tehtäviä, pyrkivät piilottamaan funktion varsinaisen tarkoituksen. Kyse ei ole siis vain tarpeettomasta kosmeettisesta kikkailusta, vaan anonyymeille funktioille pystyy mielestäni tekemään selkeästi luettavampaa ohjelmakoodia.</T></p>
+
+<p>Javassa metodiin viittaminen ei onnistu, koska kaikki muuttujat ovat joko arvomuuttujia, jotka siis sisältävät suoraan esimerkiksi kokonaisluvun, tai viitemuuttujia, jotka voivat sisältää ainoastaan viitteitä olioihin, jotka ovat luokka-, rajapinta- tai taulukkotyyppisiä [1]. Suora viittaaminen metodiin ei siis ole mahdollinen. Alunperin Java 7 -versioon oli tarkoitus tuoda tuki anonyymeille funktioille, mutta tämän toteuttaminen lykättiin versioon 8 tai myöhempään [2].</p>
+
+<p>C#:ssa viitemuuttujat voivat sisältää viitteitä olioihin, jotka ovat luokka-, rajapinta- tai delegaattityyppisiä. (Erillistä taulukkotyyppistä oliota ei C#:ssa ole, koska kaikki taulukot perivät yhteisestä abstraktista kantaluokasta System.Array [3].)</p>
+
+<p>Delegaatti on viitetyyppi, joka voi viitata yhteen tai useampaan nimettyyn tai anonyymiin funktioon. Ne muistuttavat osittain C:n ja C++:n funktio-osoittimia, mutta niistä poiketen ne ovat tyyppiturvallisia. [4]</p>
+
+<p>Jos ohjelmoija on käyttänyt pelkästään esimerkiksi Javaa, ei hän ole välttämättä osannut edes kaivata mitään tapaa viitata suoraan funktioihin tai esitellä niitä ilman anonyymin luokan vaatimaa byrokratiaa. Omasta mielestäni funktiot ovat kuitenkin erittäin tärkeitä yksiköitä ohjelman rakentamisessa ja niiden oliopaketoinnin vaatiminen Javassa johtaa ylimääräiseen byrokratiaan. Käsittelen Javan byrokratiaa ja sen vaikutuksia lisää yhteenvedossani.</p>
+
+<h2 id="yhtenäinen-tyyppijärjestelmä">Yhtenäinen tyyppijärjestelmä</h2>
+
+<p>Javassa muuttujatyypit voidaan luokitella kahteen ryhmään: arvo- ja viitemuuttujiin. Arvomuuttujiin kuuluvat boolean, char, byte, short, int, long, float ja double. Viitemuuttujat viittaavat olioihin, joiden nimet yleisen käytännön mukaan alkavat isolla alkukirjaimella: esimerkiksi String. Koska esimerkiksi kokoelmaoliot ovat kokoelmia toisista olioviitteistä, ei niihin voi sijoittaa arvomuuttujia suoraan. Siispä esimerkiksi kokonaisluvuillekin on oliovastine, Integer.</p>
+
+<p>C#:ssa vastaavaa jakoa ei ole. Kaikki tyypit, myös arvotyypit, perivät object-kantaluokasta [5].</p>
+
+<p>Miksi nämä kaksi samankaltaista kieltä eroavat? Äkkiseltään Javan toteutus kuulostaa tehokkaammalta. Olioiden luominen ei nimittäin ole kevyt operaatio, koska luodessa on laskettava olion tarvitsema tila, varattava muistista alue oliolle, sidottava olioon sen luokan ja mahdollisten kantaluokkien määrittelemät metodit, kutsuttava luokan ja mahdollisten kantaluokkien konstruktorimetodeja sekä luotava olioon osoittava viite. Arvomuuttujien kanssa riittää varata muistista vaadittu alue, jonka laskeminen on olion vaatiman tilan laskemiseen verrattuna triviaali, koska arvomuuttuja on vain yksi arvo, kun taas olion attribuuttien määrä joudutaan laskemaan. Lisäksi arvomuuttujan muistinkäyttö on huomattavasti pienempi. Jos ohjelmaa ajetaan 32-bittisessä käyttöjärjestelmässä, ovat myöskin olioviitteet 32-bittisiä, koska niillä pitää pystyä osoittamaan mihin päin muistiavaruutta tahansa. Siispä jos ohjelmassa käsitellään esimerkiksi 8-bittistä kokonaislukua 32-bittisessä käyttöjärjestelmässä, sen tallentaminen oliona vaatii 32 bittiä olioviitteelle, 8 bittiä varsinaiselle luvulle sekä kielestä ja olion luokasta riippuen jonkun verran lisämuistia olion muita tietoja varten. Arvomuuttujana 8-bittinen kokonaisluku sen sijaan vie vain 8 bittiä eli muistinkäytöltään kukin 8-bittinen arvomuuttuja on vähintäänkin 32 bittiä vaatimattomampi kuin vastaava kokonaislukuolio.</p>
+
+<p>C#:n ratkaisu ongelmaan on matalammalla tasolla Javaa vastaavaa. Myös C# käsittelee kokonaislukuja sekä primitiiveinä että olioina. Erona Javaan on se, että C#:ssa muunnos näiden välillä tapahtuu käyttäjän huomaamatta tarpeen vaatiessa. Kun ohjelmassa esimerkiksi kokonaisluku annetaan argumentiksi metodille, joka hyväksyy object-tyyppisiä arvoja, kokonaisluku paketoidaan olioksi (engl. boxing).</p>
+
+<p>Boxing- ja unboxing-toiminnot siis muuttavat arvomuuttujan oliomuuttujaksi ja takaisin. Sama löytyy myös Javasta. Erona kielten välillä on se, että Java tekee sekä boxingin että unboxingin tarpeen vaatiessa [6], kun taas C# paketoi arvomuuttujan oliomuuttujaksi implisiittisesti, mutta purkaminen takaisin arvomuuttujaksi tehdään eksplisiittisesti [7].</p>
+
+<p>On tärkeää huomata, että jos boxing- tai unboxing-toimintoja käytetään vaativassa laskennassa, suoritusteho laskee valtavasti. Microsoftin mukaan erityisesti C#:lla ja yleisemmin kaikkien Common Language Runtimen päälle ajettavilla kielillä boxing-toiminto kestää 20 kertaa pidempään kuin viitemuuttujan asettaminen sekä unboxing-toiminto ja sen vaatima casting-operaatio kestävät 4 kertaa pidempään kuin arvon asettaminen arvomuuttujalle [8].</p>
+
+<p>Suoritustehoa on yritetty paikata Javassa luomalla etukäteen joukko arvomuuttujien oliomuuttujia, jolloin boxing-operaatiot nopeutuvat huomattavasti, koska olioita ei tarvitse enää luoda tarpeen vaatiessa. Esimerkiksi boolean-arvot true ja false sekä kokonaisluvut väliltä [-128, 127] löytyvät valmiina [9]. Tästä johtuu muun muuassa minua kummastuttanut yksityiskohta, että kahden yllä mainitulta väliltä valitun kokonaislukuolion vertaaminen myös ==-operaattorilla pitää paikkaansa. Toki ==-operaattorilla ei Javassa suositella vertaamaankaan muita kuin primitiiviarvoja, mutta tämä saattaa aiheuttaa sekaannusta etenkin uusissa Java-ohjelmoijissa, jotka huomaavat tämän pitävän paikkaansa pienillä arvoilla, mutta jotka eivät huomaa testata samaa isommilla arvoilla.</p>
+
+<p>Erityisen ongelmalliseksi Javan tyypit osoittautuvat tilanteessa, jossa tarvitaan ennalta tuntematon määrä kokonaislukuja tai muita arvomuuttujia. Tällöin suoritusteholtaan tehokkain ratkaisu on tallentaa arvot taulukkoon, jolle varataan jonkinlainen määrä muistia. Ongelmia ilmenee kuitenkin tilanteissa, joissa taulukon kokoa kasvatetaan, jolloin aiemman taulukon arvot joudutaan kopioimaan uuteen taulukkoon, joka on sopivan verran suurempi. Mikä sitten on sopiva määrä? Mahdotonta sanoa, koska tämä riippuu aina tilanteesta. Mielestäni tämä on jälleen yksi tilanne, missä Java-ohjelmoija joutuu miettimään ongelman ratkaisemista tasolla, jolle hänen ei tarvitsisi joutua.</p>
+
+<p>Myös C#:issa on alunperin ollut ongelmia suoritustehon kanssa, jos arvomuuttujia on täytynyt tallentaa kokoelmiin (System.Collection-luokasta periviin olioihin). Tilanne kuitenkin muuttui C# 2.0:n julkaisussa, kun C#:iin lisättiin tuki geneerisyydelle. Jos arvomuuttujia tallennetaan System.List<T>-luokasta periviin listoihin, ei boxing- ja unboxing-toiminnoille ole tarvetta arvomuuttujia listaan lisätessä tai niitä sieltä pois otettaessa [8]. Lisäksi geneerisyys on muutenkin suositeltavaa, jolloin ei joudu tukeutumaan cast-operaatioihin ja niistä mahdollisesti aiheutuviin poikkeuksiin, jos object-tyyppisestä kokoelmasta löytynyt olio ei ollutkaan alunperin peritty oikeasti luokasta.</T></p>
+
+<p>Mielestäni C#:in yhtenäinen tyyppijärjestelmä on selkeä parannus Javan arvo- ja oliomuuttujiin jakamiseen verrattuna. Korkeamman tason ohjelmointikielten tavoitteena on nimenomaan vapauttaa ohjelmoija miettimästä yksityiskohtia, jotka tapahtuvat tarpeellista matalammalla abstraktiotasolla, jotta ohjelmoija voi keskittyä häntä oikeasti kiinnostavaan ongelmaan. Tietenkin abstraktiotasoissa voidaan mennä joissain tapauksissa liian pitkälle. Esimerkiksi jos kielessä ei olisi mitään mahdollisuutta tallentaa arvomuuttujia primitiiveinä, vaan kaikki tallennettaisiin olioina kuten esimerkiksi Python tekee, kärsii kyseisellä kielellä tehtyjen ohjelmien suoritusteho. Tällöin usein ohjelmoijan ainoaksi ratkaisuksi jää toteuttaa vaativa ohjelmaosuus jollain matalamman tason kielellä, jolla saadaan vaadittu suoritustehotaso. En väitä, että esimerkiksi Python olisi huono kieli, koska se näin tekee: Python on vain abstraktiotasoltaan vielä astetta Javaa ja C#:ia korkeammalla. Java ja C# sen sijaan toimivat samalla abstraktiotasolla, mutta Java pakottaa ohjelmoijan miettimään tyyppijärjestelmää mielestäni tarpeettoman matalalla tasolla muunnoskohdissa, joissa taas C# hoitaa muunnokset ilman ohjelmoijan panosta ja suoritustehoa laskematta.</p>
+
+<h2 id="operaattoreiden-ylikuormitus">Operaattoreiden ylikuormitus</h2>
+
+<p>Jo Javan kehityksen alkuvaiheissa päätettiin, ettei kieleen tule tukea operaattoreiden ylikuormitukselle, eikä kantaa olla muutettu kielen myöhemmissäkään versioissa. Kielen alkuperäinen kehittäjä James Gosling tosin myöntää jälkikäteen epäilevänsä ratkaisun pätevyyttä ja kertoo poisjättämisen syyksi hänen kohdallaan olleen huonot kokemukset C++-kielestä, jolla ohjelmoijat “väärinkäyttivät” operaattoreiden ylikuormitusta [10]. Myöskin comp.lang.java-uutisryhmän Usein kysytyt kysymykset -sivu listaa yhdeksi syyksi C++:n osoittaneen esimerkillään, että operaattoreiden ylikuormitus tekee ohjelmakoodista lähes ylläpitokelvotonta. Samainen vastaus mainitsee, että myöskään metodien ylikuormittaminen aiottiin jättää pois kielestä, mutta esimerkiksi tulostusmetodien kohdalla ylikuormittaminen auttoi niin paljon, ettei ominaisuutta lopulta jätetty pois. [11]</p>
+
+<p>Väite on mielestäni erikoinen, koska esimerkiksi C#-yhteisöstä ei ole tullut vastustusta operaattoreiden ylikuormittamiselle eivätkä C#-kielellä tehdyt ohjelmat ole osoittautuneet ylläpitokelvottomiksi.</p>
+
+<p>Javan kehittäjät väittivät, että kaiken, mitä operaattoreiden ylikuormituksella pystyy tekemään, pystyy aivan yhtä hyvin tekemään metodeilla ja attribuuteilla. Lisäksi operaattoreiden ylikuormittamisen poistaminen tekee koodista huomattavasti yksinkertaisempaa. [12] On totta, että teknisesti kaiken saman pystyy tekemään ilmankin ylikuormitusta. On myöskin totta, että esimerkiksi matriisiluokkia käsiteltäessä on huomattavasti yksinkertaisempaa kirjoittaa</p>
+
+<p><code>result = (matrix1 + matrix2 - matrix3) * matrix4;</code></p>
+
+<p>kuin</p>
+
+<p><code>result = ((matrix1.sum(matrix2)).subtract(matrix3).multiply(matrix4);</code></p>
+
+<p>Eräs usein kuulemani perustelu pelkillä metodeilla kirjoitetun koodin paremmuudelle on, että silloin metodin nimestä näkee suoraan, mitä metodi aikoo tehdä. Tämä ei kuitenkaan ole valitettavasti näin yksinkertaista. Hyvin usein metodeilla saattaa olla yllättäviä sivuvaikutuksia kuten esimerkiksi jostain lähteestä JDK:n BufferedReader-olion readLine-metodilla seuraava lukukohta siirtyykin luetun rivin verran eteenpäin [13]. Tämä ei todellakaan ilmene metodin nimestä, vaan ohjelmoijan on tiedettävä tämä muista lähteistä. Itse asiassa tämä ei ilmene myöskään metodin dokumentoinnista.</p>
+
+<p>Kenties dokumentointi olisi hyvä kieltää kielen seuraavasta versiosta, koska se voi johtaa epäselviin tilanteisiin?</p>
+
+<p>Javassa on valitettavan epäselvä tapa vertailla muuttujien samanarvoisuutta. Uuden ohjelmoijan aloittaessa Javan opettelun, näytetään hänelle usein esimerkkejä kokonaisluvuilla laskemisesta ja niiden vertailusta ==-operaattorilla. Olioiden kanssa kyseistä vertailua kuitenkin varoitetaan käyttämästä. Tämä johtuu siitä, että Javassa olioiden kanssa ==-operaattori vertaakin olioviitteiden samanarvoisuutta. Siispä esimerkiksi ohjelmakoodissa</p>
+
+<p><code>
+String a = "merkkijono";<br />
+String b = "merkkijono";<br />
+bool vertailu = a == b;
+</code></p>
+
+<p>vertailu saa arvokseen <code>false</code>. Tai ehkä <code>true</code>. Jos kääntäjä on huomannut, että kahta String-oliota yritetään luoda samalla merkkijonolla, se saattaakin luoda vain yhden String-olion, johon tässä tapauksessa sekä a- että b-muuttujat osoittavat. Jos halutaan vertailla olioiden yhtäsuuruutta, on käytettävä equals-metodia. Tämä yhtäsuuruusvertailujen tekeminen kahdella eri tavalla on mielestäni tarpeettoman monimutkaista ja on omien kokemuksieni perusteella johtanut lukuisiin virhetilanteisiin aloittelevien ja kokeneempienkin Java-koodaajien kohdalla. Aivot mieltävät olioidenkin vertailun ==-operaattorilla helposti oikeaksi toimenpiteeksi, koska pitäähän se paikkaansa myöskin primiitivien vertailun kohdalla.</p>
+
+<p>Mielestäni Javan linja operaattoreiden ylikuormituksen kieltämiseen on paitsi perustelematonta myös tekopyhää. Mitenkäs Javassa yhdistetäänkään kaksi merkkijonoa yhteen? Aivan: <code>"+" + "-" + "operaattorilla"</code>. Tässä tilanteessa +-operaattorin ylikuormittaminen onkin ollut hyvä idea, mutta ilmeisesti mitään muuta mahdollista tilannetta ei heidän mielestään ole.</p>
+
+<p>Ymmärrän hyvin Javan kehittäjien alkuperäisen tavoitteen luoda kieli niin, että sillä olisi vaikeampi kirjoittaa epäselvää ohjelmakoodia. On totta, että on epäselvää, mitä esimerkiksi matriisiluokan ylikuormitettu bitshift-operaattori « tarkoittaisi? Kuitenkaan viisas ohjelmoija ei tällaista koskaan kirjoittaisi, jos se ei olisi mielekästä. On valitettava tosiasia, ettei ohjelmointikieli pysty suojelemaan ohjelmoijaa hänen omalta tyhmyydeltään Välillä ohjelmoijat tekevät virheitä ja epäselvällä operaattoreiden ylikuormittamisella saavat aikaan epäselvää ohjelmakoodia. Tämä kuitenkin pitää paikkaansa kaikilla kielillä - myös Javalla. Tehokkaan työkalun poistaminen kokonaan kielestä sen takia, että epäselvää koodia tuottavat ohjelmoijat voisivat tehdä sillä epäselvää koodia, on huono syy, koska samaisella työkalulla on lukuisissa tilanteissa osoitettu pystyvän tuottamaan luettavampaa ohjelmakoodia.</p>
+
+<h2 id="poikkeukset">Poikkeukset</h2>
+
+<p>Ennen kuin tarkastelen enemmän poikkeuksia, puutun heti Javan poikkeusten nimeämiseen. Javan virallinen dokumentaatio jakaa poikkeukset tarkistettaviin (engl. checked) ja ajonaikaisiin (engl. runtime). Tämä on kuitenkin hämäävä tapa nimetä, koska eiväthän tarkistettavatkaan poikkeukset aiheudu muulloin kuin ajon aikana. Nimi juontaakin juurensa siihen, että käännön aikana voidaan huomata, mistä kohti tarkistettavia poikkeuksia voi aiheutua, kun taas ajonaikaisia poikkeuksia ei voida huomata etukäteen.</p>
+
+<p>Olennaisin ero ohjelmoijalle tarkistettavien ja ajonaikaisten poikkeusten välillä on se, että kaikki metodin mahdolliset heittämät tarkistettavat poikkeukset on ilmoitettava metodin esittelyssä. Tarkistettavien poikkeuksien listauksessa on sekä hyviä että huonoja puolia. Hyvänä puolena on mielestäni se, että metodia käyttävät ohjelmoija tietää suoraan, mitä (tarkistettavia) poikkeuksia metodi voi heittää ja osaa varautua näihin joko käsittelemällä ne itse tai päästää ne oman kutsujametodinsa käsiteltäväksi. Huonona puolena on se, että kaikkien mahdollisten poikkeusten listaaminen on usein työlästä ja monitasoisessa ohjelmistoarkkitehtuurissa ylempien tasojen metodien poikkeuslistat venyvät helposti valtavan pitkiksi. Tästä johtuen tarkistettavia poikkeuksia käsiteltäessä onkin usein tapana paketoida ne omiin poikkeusolioihin, jolloin esimerkiksi asiakkaita käsittelevä CustomerRegister-olio voi heittää ainoastaan CustomerRegisterException-tyyppisiä poikkeuksia. Tämä johtaa kuitenkin siihen, että tasoja ylöspäin noustaessa oikeat poikkeukset saattavat löytyä todella monen erillisen poikkeusolion sisältä. Tällöin oikean ongelman löytäminen ja alempien tasojen vain tietynlaisiin poikkeuksiin reagointiin on hyvin työlästä.</p>
+
+<p>Valitettavasti myöskin tarkistettavien poikkeusten hyvät puolet ovat täysin turhia, koska metodit voivat aina heittää ajonaikaisia poikkeuksia, joita ei ole pakko luetella metodin esittelyssä. Täten metodia käyttävä ohjelmoija osaa varautua vain osaan poikkeuksista, eikä hän voi koskaan täysin varmistua siitä, että kaikki mahdolliset poikkeukset olisivat hänen tiedossaan. Tämä johtaa omien kokemusteni perusteella kahdenlaisiin ongelmiin.</p>
+
+<p>Ensimmäisenä ongelmana on se, että ohjelmoijalla jää valheellinen turvallisuuden tunne, kun reagoituaan tarkistettaviin poikkeuksiin hän kuvittelee poikkeustilanteiden olevan hallinnassa. Näin helposti unohdetaan kattavalla yksikkötestauksella tai muilla testaustyökaluilla varmistaa metodin toimiminen erilaisissa ongelmatilanteissa.</p>
+
+<p>Toisena ongelmana on se, että ohjelmoija helposti varmistaa kaikkien poikkeusten käsittelyn ottamalla suoraan kiinni kaikki Exception-kantaluokasta perivät poikkeukset. Näin oikeat ongelmat kuitenkin jäävätkin alempien tasojen metodien syövereihin ja ylemmiltä tasoilta ongelmat ilmenevät vain ohjelmiston käsittämättömällä toiminnalla, jonka tunnistaminen ei tyypillisillä virheenkäsittelytavoilla onnistu mitenkään.</p>
+
+<p>Omien kokemusten perusteella tarkistettavista poikkeuksista aiheutuvia haittoja paikataan usein paketoimalla kaikki mahdolliset poikkeukset ajonaikaisten poikkeusten kantaluokasta periviin poikkeusolioihin, jolloin niitä ei tarvitse enää esitellä kunkin metodin kohdalla.</p>
+
+<p>Tiivistettynä siis Javan poikkeusjaottelut johtavat siihen, että kaikki tarkistettavat poikkeukset on ilmoitettava, jotta metodia käyttävä ohjelmoija osaisi niihin reagoida, mutta metodista saattaa lentää ajonaikaisia poikkeuksia, joista hän on onnellisen tietämätön. Eli siis byrokratiaa, joka ei lopulta ratkaise ongelmaa, vaan kannustaa ohjelmoijia huonoihin käytänteisiin.</p>
+
+<p>C#:in kanssa poikkeuksia on ainoastaan yhdenlaisia eikä niitä tarvitse metodien esittelyssä listata. Aivan ongelmatonta ei ole toki tämäkään. Nyt ohjelmoijan tehtäväksi jää selvittää kaikki mahdolliset poikkeukset joko lukemalla metodin dokumentaatiota tai sen ollessa puutteellista, kirjoitettava kattavat automatisoitavat yksikkötestit tai muut vastaavat työkalut, joilla hän voi varmistua metodien odotetunlaisesta toiminnasta. Tämä kuitenkin on jo itsessään erittäin arvokasta ohjelmiston jatkokehityksen kannalta, joten poikkeusten esittelemättömyys ei sinänsä johdakaan huonompaan koodiin, vaan parempaan.</p>
+
+<h2 id="yhteenveto">Yhteenveto</h2>
+
+<p>Jo kandidaatintutkielmaa kirjoittaessani huomasin, että Javan ja C#:in eroja vertaillessa en löytänyt mielestäni yhtäkään kohtaa, jossa Javan ratkaisu olisi osoittautunut paremmaksi. Näin kävi myös esseeseen valitsemieni erojen syitä selvitellessä.</p>
+
+<p>Kenties on epäreilua vertaillakaan Javaa ja C#:ia näin suoraan, koska C# on tehty monta vuotta Javan jälkeen ja yksi sen suunnitteluun eniten vaikuttanut kieli onkin juuri Java. Täten C#:in kehittäjät ovat voineet katsoa, missä Java meni vikaan ja korjata ongelman. Javassa useat muutokset olisi vaikeaa tai jopa mahdotonta toteuttaa, koska kieli on ollut jo pidempään käytössä ja kaikki muutosehdotukset joutuvat tarkan kritiikin ja usein kovan muutosvastarinnan kohteeksi.</p>
+
+<p>Mielestäni on ollut mielenkiintoista tutkia näiden kahden kielen eroja, koska sinänsä ne ovat niin lähellä toisiaan, mutta monissa yksityiskohdissa eroavat niin paljon toisistaan. Vertailujen aikana olen uudella tavalla oppinut arvostamaan kielensuunnittelun yksityiskohtien huomiota ja niiden vaikutusta kielellä toteuttaviin ohjelmistoihin pitkälläkin aikavälillä.</p>
+
+<p>Olen työskennellyt molempien ohjelmointikielien kanssa. Javasta minulla on reilun kahden vuoden ja C#:ista noin kahdeksan kuukauden ammatillinen kokemus. Työskennellessäni Javan kanssa huomasin lähes päivittäin, miten kieli osoittautui työtä hidastavaksi tekijäksi. Pahimmillaan kielen puutteet tekivät joistain ratkaisuista todella vaikeita toteuttaa, mutta parhaimmillaankin ongelmat tekivät ohjelmakoodin kirjoittamisesta vähemmän mielekästä. Lisäksi huomasin oman luovuteni ja inspiraationi kärsivän joutuessani käyttämään työkalua, joka niin monesta kohdasta tuntui kankealta ja mielikuvituksettomalta. C#:in kanssa en ole huomannut vielä kertaakaan miettiväni, miten helppoa ohjelman toteuttaminen olisi toisella kielellä. Tämä on parantanut huomattavasti työmotivaatiotani. Onkin hyvä muistaa, että ohjelmakielten puutteet eivät aiheuta vain teknisiä, vaan myös henkisiä ongelmia.</p>
+
+<h2 id="lähteet">Lähteet</h2>
+
+<p>[1] <a href="http://java.sun.com/docs/books/jls/third_edition/html/typesValues.html">Sun Microsystems Inc., Java Language Specification, 3rd Edition</a>, haettu 22.11.2010.</p>
+
+<p>[2] <a href="http://openjdk.java.net/projects/jdk7/features/">Oracle Corporation, JDK 7 Features</a>, haettu 22.11.2010.</p>
+
+<p>[3] <a href="http://msdn.microsoft.com/en-us/library/aa288453(VS.71).aspx">Microsoft Corporation, Arrays Tutorial</a>, haettu 22.11.2010.</p>
+
+<p>[4] <a href="http://msdn.microsoft.com/en-us/library/ms173172(v=VS.80).aspx">Microsoft Corporation, Using Delegates (C# Programming Guide)</a>, haettu 22.11.2010.</p>
+
+<p>[5] <a href="http://msdn.microsoft.com/en-us/library/aa664638(VS.71).aspx">Microsoft Corporation, Type System Unification</a>, haettu 23.11.2010.</p>
+
+<p>[6] <a href="http://download.oracle.com/javase/1.5.0/docs/guide/language/autoboxing.html">Oracle Corporation, Autoboxing</a>, haettu 23.11.2010.</p>
+
+<p>[7] <a href="http://msdn.microsoft.com/en-us/library/yz2be5wk.aspx">Microsoft Corporation, Boxing and Unboxing</a>, haettu 23.11.2010.</p>
+
+<p>[8] <a href="http://msdn.microsoft.com/en-us/library/ms173196.aspx">Microsoft Corporation, Performance</a>, haettu 23.11.2010.</p>
+
+<p>[9] <a href="http://java.sun.com/docs/books/jls/third_edition/html/conversions.html#5.1.7">Sun Microsystems, Conversions and Promotions</a>, haettu 23.11.2010.</p>
+
+<p>[10] <a href="http://www.gotw.ca/publications/c_family_interview.htm">The C Family of Languages: Interview with Dennis Ritchie, Bjarne Stroustrup, and James Gosling</a>, haettu 23.11.2010.</p>
+
+<p>[11] <a href="http://www.cafeaulait.org/javafaq.html#xtocid1902938">The comp.lang.java FAQ List</a>, haettu 23.11.2010.</p>
+
+<p>[12] <a href="http://java.sun.com/docs/white/langenv/Simple.doc2.html">The Java Language Environment</a>, haettu 23.11.2010.</p>
+
+<p>[13] <a href="http://download.oracle.com/javase/1.5.0/docs/api/java/io/BufferedReader.html#readLine()">BufferedReader (Java 2 Platform SE 5.0)</a>, haettu 23.11.2010.</p>
+
+  </article>
+
+</div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrap">
+
+    <div class="footer-col-2 column">
+      <ul>
+        <li>
+          <a href="https://github.com/VilleSalonen">
+            <span class="icon github">
+              <svg version="1.1" class="github-icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+                <path fill-rule="evenodd" clip-rule="evenodd" fill="#C2C2C2" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761
+                c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32
+                c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472
+                c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037
+                C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65
+                c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261
+                c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082
+                c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129
+                c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+              </svg>
+            </span>
+            <span class="username">VilleSalonen</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://twitter.com/VilleSalonenFi">
+            <span class="icon twitter">
+              <svg version="1.1" class="twitter-icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+                <path fill="#C2C2C2" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27
+                c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767
+                c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206
+                C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271
+                c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469
+                c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+              </svg>
+            </span>
+            <span class="username">VilleSalonenFi</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</footer>
+
+
+    </body>
+</html>

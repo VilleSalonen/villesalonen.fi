@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Let's Encrypt</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="description" content="Software Designer, Photographer">
+    <link rel="canonical" href="http://villesalonen.fi/2015/12/30/lets-encrypt/">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
+
+</head>
+
+
+    <body>
+
+    <header class="site-header">
+
+  <div class="wrap">
+
+    <a class="site-title" href="/">Ville Salonen</a>
+
+    <nav class="site-nav">
+      <a href="#" class="menu-icon">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+           viewBox="0 0 18 15" enable-background="new 0 0 18 15" xml:space="preserve">
+          <path fill="#505050" d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0
+            h15.031C17.335,0,18,0.665,18,1.484L18,1.484z"/>
+          <path fill="#505050" d="M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0c0-0.82,0.665-1.484,1.484-1.484
+            h15.031C17.335,6.031,18,6.696,18,7.516L18,7.516z"/>
+          <path fill="#505050" d="M18,13.516C18,14.335,17.335,15,16.516,15H1.484C0.665,15,0,14.335,0,13.516l0,0
+            c0-0.82,0.665-1.484,1.484-1.484h15.031C17.335,12.031,18,12.696,18,13.516L18,13.516z"/>
+        </svg>
+      </a>
+      <div class="trigger">
+        <a class="page-link" href="/">CV</a>
+        <a class="page-link" href="/writings/">Writings</a>
+      </div>
+    </nav>
+
+  </div>
+
+</header>
+
+
+    <div class="page-content">
+      <div class="wrap">
+      <div class="post">
+
+  <header class="post-header">
+    <h1>Let's Encrypt</h1>
+    <p class="meta">Dec 30, 2015</p>
+  </header>
+
+  <article class="post-content">
+  <p>I’ve been waiting for <a href="https://letsencrypt.org/">Let’s Encrypt</a> for a long time. For those of you, who haven’t heard of it, Let’s Encrypt is a free service providing SSL certificates so everyone can afford to protect their websites using SSL. It was finally released a short while ago and now on my Christmas vacation I had time to play around with it.</p>
+
+<p>There were some gotchas and problems so I decided to write a short article how I overcame them.</p>
+
+<p>This website is running on <a href="https://www.digitalocean.com/">Digital Ocean’s</a> virtual machine with Ubuntu 15.10. Some Linux distributions have Let’s Encrypt software available from the distribution’s own repositories but I ended up cloning from <a href="https://github.com/letsencrypt/letsencrypt">the master branch</a>.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/letsencrypt/letsencrypt
+cd letsencrypt/
+</code></pre></div></div>
+
+<p>Problem #1 was that I hadn’t set up a proper CNAME record for my domain. In other words my website could only be reached from <a href="http://villesalonen.fi">http://villesalonen.fi</a> but not from <a href="http://www.villesalonen.fi">http://www.villesalonen.fi</a>. This was quickly fixed from Digital Ocean’s excellent control panel. Unfortunately propagation of DNS records takes sometime so I couldn’t immediately request for a certificate for both villesalonen.fi and www.villesalonen.fi. More on this later on.</p>
+
+<p>Problem #2 was that if I had Apache for webserver I could have tried automatic Apache module of Let’s Encrypt but as I’m using nginx I had to go in another direction. Let’s Encrypt provides a way of requesting the certificate by placing automatically generated file under www root so I decided to give it a try:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./letsencrypt-auto certonly --webroot -w /var/www/villesalonen/ -d villesalonen.fi -d www.villesalonen.fi
+</code></pre></div></div>
+
+<p>This failed and the last error message on the screen referenced www.villesalonen.fi so I thought it was related to slow DNS propagation of the new CNAME record. I tried to pinpoint the problem further by only using the definitely working villesalonen.fi domain but that didn’t work either.</p>
+
+<p>This brings us to problem #3. Let’s Encrypt generates the file in /path/to/webroot/.well-known/acme-challenge with a random-esque filename but this file couldn’t be found via HTTP request. First instinct was to blame the directory name preceded with dot. These are typically automatically hidden on Apache server. I quickly ruled that out:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cp -r .well-known well-known
+</code></pre></div></div>
+
+<p>The problem persisted. After intense staring for a few seconds I ventured into my web root folder and found out that I had forgotten how <a href="https://jekyllrb.com/">Jekyll</a> places statically generated HTML files in a subdirectory named _site. To make sure that everything went as I expected I used more manual version of Let’s Encrypt setup:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./letsencrypt-auto certonly --manual
+</code></pre></div></div>
+
+<p>This manual version instructed me to manually generate the file with the expected content:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>printf "%s" bmrPK6IaftQeaVxuhTvjR-EA-bY4M5KmTJZXPeQqxTk.a62iCD1lFDqBBWtXP2FIsBCNwSiwvJGaKJffJNhxeEk &gt; /var/www/villesalonen/_site/.well-known/acme-challenge/bmrPK6IaftQeaVxuhTvjR-EA-bY4M5KmTJZXPeQqxTk
+</code></pre></div></div>
+
+<p>After making sure that the file could indeed by found I completed the setup and lo and behold, I finally successfully generated the certificates. Certificates were automatically placed in /etc/letsencrypt/live/. My first and poorly copy-pasted version of nginx configuration file with certificates looked like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server {
+    listen 443;
+ 
+    server_name villesalonen.fi;
+ 
+    ssl_certificate /etc/letsencrypt/live/villesalonen.fi/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/villesalonen.fi/privkey.pem;
+ 
+    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    ssl_prefer_server_ciphers on;
+    ssl_ciphers AES256+EECDH:AES256+EDH:!aNULL;
+ 
+    location / {
+        root /var/www/villesalonen/_site/;
+    }
+}
+ 
+server {
+    listen 80;
+    server_name villesalonen.fi;
+    return 301 https://$host$request_uri;
+}
+</code></pre></div></div>
+
+<p>Only part of this configuration that actually worked was redirect from port 80 to port 443. Port 443 only gave me an error page from Chrome that something went wrong with the SSL connection. Problem #4 had presented itself. /var/log/nginx/error.log didn’t give any recent errors and access.log entries looked like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>91.157.67.239 - - [30/Dec/2015:12:11:01 +0200] "\x16\x03\x01\x00\xCA\x01\x00\x00\xC6\x03\x03\xA9\x0B}\xEA\xE1A\xAB\xF5\xF6\xFA\xCC\xC5{U\xC9\xA61\x16\xFF\x83Q\xDB\x05\xA1\x96R\xC57q3\x80\x9E\x00\x00\x1E\xC0+\xC0/\x00\x9E\xCC\x14\xCC\x13\xC0" 400 181 "-" "-"
+91.157.67.239 - - [30/Dec/2015:12:11:02 +0200] "\x16\x03\x01\x00\xA3\x01\x00\x00\x9F\x03\x02\xD5\x1CK]\xC6x8_\xF6\xAE,\xEB\xED\xDF-1\xB1I!C\xD3\xFA/H\xC6\x11{\xDF&lt;k\xD7~\x00\x00\x14\xC0" 400 181 "-" "-"
+91.157.67.239 - - [30/Dec/2015:12:11:02 +0200] "\x16\x03\x01\x00\xA3\x01\x00\x00\x9F\x03\x01\xC2E\xE8\x86G\x7F\x14\xDD0:\xF2%9\xAE\xCC\x13\xFC#\xBFJ&lt;t[W\x17\xF4$h\xAE\xA9\x1C\x10\x00\x00\x14\xC0" 400 181 "-" "-"
+</code></pre></div></div>
+
+<p>Values “400” on each row would have given a clue to a more knowledgeable person but for me, I didn’t realize the problem from this alone. I decided to increase logging verbosity and added the following line to my nginx configuration:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>error_log /var/log/nginx/debug debug;
+</code></pre></div></div>
+
+<p>After reloading nginx with /etc/init.d/nginx reload I finally got the relevant error in a more human-readable form:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>2015/12/30 12:14:28 [info] 1383#0: *48 client sent invalid method while reading client request line, client: 91.157.67.239, server: villesalonen.fi, request: "▒▒t▒▒Q▒▒,N▒▒N▒▒s"
+2015/12/30 12:14:28 [debug] 1383#0: *46 HTTP/1.1 400 Bad Request
+</code></pre></div></div>
+
+<p>This led me to double-check my nginx configuration and I found the problematic line:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># listen 443;   # BROKEN
+listen 443 ssl; # This works
+</code></pre></div></div>
+
+<p>In plain English this meant that the browser was sending secure HTTPS requests because it was connecting port 443 but the server thought that it should have received non-secure HTTP requests. After this fix I finally had a working SSL connection. Yay!</p>
+
+<p>By this time the DNS changes had propagated so I requested a new certificate with both villesalonen.fi and www.villesalonen.fi domains. Let’s Encrypt’s manual wizard asked whether I wanted to expand the current certificate with new subdomain and I confirmed the change. Now I had working SSL connection for both domains.</p>
+
+<p>Before deeming the operation successful I decided to have a final look on what Chrome thought of my certificate and I was disappointed to notice that according to Chrome the server used obsolete cipher suite. After a quick googling I found Mozilla’s recommended SSL configurations for the most common server software from <a href="https://mozilla.github.io/server-side-tls/ssl-config-generator/">Mozilla SSL Configuration Generator</a>. The generated configuration had ssl_ciphers values in correct order which made Chrome a happy camper. After solving the problem #6 with these changes my final nginx configuration looked like this:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>server {
+    listen 443 ssl;
+
+    server_name villesalonen.fi, www.villesalonen.fi;
+
+    # certs sent to the client in SERVER HELLO are concatenated in ssl_certificate
+    ssl_certificate /etc/letsencrypt/live/villesalonen.fi/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/villesalonen.fi/privkey.pem;
+    ssl_session_timeout 1d;
+    ssl_session_cache shared:SSL:50m;
+    ssl_session_tickets off;
+
+    # Diffie-Hellman parameter for DHE ciphersuites, recommended 2048 bits
+    ssl_dhparam /etc/ssl/certs/dhparam.pem;
+
+    # modern configuration. tweak to your needs.
+    ssl_protocols TLSv1.1 TLSv1.2;
+    ssl_ciphers 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!3DES:!MD5:!PSK';
+    ssl_prefer_server_ciphers on;
+
+    # HSTS (ngx_http_headers_module is required) (15768000 seconds = 6 months)
+    add_header Strict-Transport-Security max-age=15768000;
+
+    # OCSP Stapling ---
+    # fetch OCSP records from URL in ssl_certificate and cache them
+    ssl_stapling on;
+    ssl_stapling_verify on;
+
+    location / {
+        root /var/www/villesalonen/_site/;
+    }
+}
+
+server {
+    listen 80;
+    server_name villesalonen.fi, www.villesalonen.fi;
+    return 301 https://$host$request_uri;
+}
+</code></pre></div></div>
+
+<p>Last required step was the generation of /etc/ssl/certs/dhparam.pem but this was done quickly using the following commands:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>cd /etc/ssl/certs
+openssl dhparam -out dhparam.pem 2048
+</code></pre></div></div>
+
+<p>One final check with SSL Labs and I was elated to find that I was graded A+! Mission complete!</p>
+
+<p>Let’s Encrypt certificates are valid for 3 months. Fortunately the problems have now been solved so hopefully I should be able to renew certificates with a single command below. I quickly tried it out and the certificates were renewed and the site still works so I’m fairly confident that it will work 3 months from now as well.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>./letsencrypt-auto certonly --webroot -w /var/www/villesalonen/_site/ -d villesalonen.fi -d www.villesalonen.fi
+</code></pre></div></div>
+
+  </article>
+
+</div>
+      </div>
+    </div>
+
+    <footer class="site-footer">
+
+  <div class="wrap">
+
+    <div class="footer-col-2 column">
+      <ul>
+        <li>
+          <a href="https://github.com/VilleSalonen">
+            <span class="icon github">
+              <svg version="1.1" class="github-icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+                <path fill-rule="evenodd" clip-rule="evenodd" fill="#C2C2C2" d="M7.999,0.431c-4.285,0-7.76,3.474-7.76,7.761
+                c0,3.428,2.223,6.337,5.307,7.363c0.388,0.071,0.53-0.168,0.53-0.374c0-0.184-0.007-0.672-0.01-1.32
+                c-2.159,0.469-2.614-1.04-2.614-1.04c-0.353-0.896-0.862-1.135-0.862-1.135c-0.705-0.481,0.053-0.472,0.053-0.472
+                c0.779,0.055,1.189,0.8,1.189,0.8c0.692,1.186,1.816,0.843,2.258,0.645c0.071-0.502,0.271-0.843,0.493-1.037
+                C4.86,11.425,3.049,10.76,3.049,7.786c0-0.847,0.302-1.54,0.799-2.082C3.768,5.507,3.501,4.718,3.924,3.65
+                c0,0,0.652-0.209,2.134,0.796C6.677,4.273,7.34,4.187,8,4.184c0.659,0.003,1.323,0.089,1.943,0.261
+                c1.482-1.004,2.132-0.796,2.132-0.796c0.423,1.068,0.157,1.857,0.077,2.054c0.497,0.542,0.798,1.235,0.798,2.082
+                c0,2.981-1.814,3.637-3.543,3.829c0.279,0.24,0.527,0.713,0.527,1.437c0,1.037-0.01,1.874-0.01,2.129
+                c0,0.208,0.14,0.449,0.534,0.373c3.081-1.028,5.302-3.935,5.302-7.362C15.76,3.906,12.285,0.431,7.999,0.431z"/>
+              </svg>
+            </span>
+            <span class="username">VilleSalonen</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://twitter.com/VilleSalonenFi">
+            <span class="icon twitter">
+              <svg version="1.1" class="twitter-icon-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                 viewBox="0 0 16 16" enable-background="new 0 0 16 16" xml:space="preserve">
+                <path fill="#C2C2C2" d="M15.969,3.058c-0.586,0.26-1.217,0.436-1.878,0.515c0.675-0.405,1.194-1.045,1.438-1.809
+                c-0.632,0.375-1.332,0.647-2.076,0.793c-0.596-0.636-1.446-1.033-2.387-1.033c-1.806,0-3.27,1.464-3.27,3.27
+                c0,0.256,0.029,0.506,0.085,0.745C5.163,5.404,2.753,4.102,1.14,2.124C0.859,2.607,0.698,3.168,0.698,3.767
+                c0,1.134,0.577,2.135,1.455,2.722C1.616,6.472,1.112,6.325,0.671,6.08c0,0.014,0,0.027,0,0.041c0,1.584,1.127,2.906,2.623,3.206
+                C3.02,9.402,2.731,9.442,2.433,9.442c-0.211,0-0.416-0.021-0.615-0.059c0.416,1.299,1.624,2.245,3.055,2.271
+                c-1.119,0.877-2.529,1.4-4.061,1.4c-0.264,0-0.524-0.015-0.78-0.046c1.447,0.928,3.166,1.469,5.013,1.469
+                c6.015,0,9.304-4.983,9.304-9.304c0-0.142-0.003-0.283-0.009-0.423C14.976,4.29,15.531,3.714,15.969,3.058z"/>
+              </svg>
+            </span>
+            <span class="username">VilleSalonenFi</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
+</footer>
+
+
+    </body>
+</html>
