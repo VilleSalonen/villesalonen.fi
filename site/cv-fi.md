@@ -10,9 +10,11 @@ permalink: /cv-suomeksi/
 
 ## Työhistoria
 
-  * <strong>[Tieto Healthcare & Welfare Oy](http://www.tieto.fi) (1.10.2013-):</strong> Senior Software Developer
-  * <strong>[Sysdrone Oy / Protacon Solutions Oy](http://www.sysdrone.fi) (6.4.2010-30.9.2013):</strong> Ohjelmistosuunnittelija
-  * <strong>[Sportum Oy](http://www.sportum.fi) (1.6.2008-31.3.2010):</strong> Java-ohjelmoija ja tietokantasuunnittelija
+  * <strong>[Tietoevry Oyj](https://www.tietoevry.com)</strong>
+    *  <strong>1.1.2022-</strong> Lead Software Developer
+    *  <strong>1.10.2013-31.12.2021</strong> Senior Software Developer
+  * <strong>Sysdrone Oy / Protacon Solutions Oy (6.4.2010-30.9.2013):</strong> Ohjelmistosuunnittelija
+  * <strong>Sportum Oy (1.6.2008-31.3.2010):</strong> Java-ohjelmoija ja tietokantasuunnittelija
   * <strong>Cygnaeus-lukio (3.5.2005-31.7.2006):</strong> Atk-tuki, verkkosivusuunnittelu, sijaisopetus
 
 ## Koulutus
