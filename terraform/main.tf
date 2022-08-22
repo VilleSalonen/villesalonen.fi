@@ -40,6 +40,15 @@ resource "azurerm_dns_a_record" "villesalonen" {
   name                = "@"
   zone_name           = azurerm_dns_zone.villesalonen.name
   resource_group_name = azurerm_resource_group.rg.name
-  ttl                 = 300
+  ttl                 = 3600
   target_resource_id  = azurerm_static_site.villesalonen.id
+}
+
+resource "azurerm_dns_ns_record" "villesalonen" {
+  name                = "@"
+  zone_name           = azurerm_dns_zone.villesalonen.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 172800
+
+  records = ["ns1-34.azure-dns.com.", "ns2-34.azure-dns.net.", "ns3-34.azure-dns.org.", "ns4-34.azure-dns.info."]
 }
