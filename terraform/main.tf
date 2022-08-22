@@ -24,3 +24,8 @@ resource "azurerm_resource_group" "rg" {
   name     = "static-apps"
   location = "swedencentral"
 }
+
+resource "azurerm_dns_zone" "villesalonen" {
+  name                = "villesalonen.fi"
+  resource_group_name = azurerm_resource_group.rg.name
+}
