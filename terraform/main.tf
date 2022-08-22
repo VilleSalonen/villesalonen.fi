@@ -35,3 +35,11 @@ resource "azurerm_dns_zone" "villesalonen" {
   name                = "villesalonen.fi"
   resource_group_name = azurerm_resource_group.rg.name
 }
+
+resource "azurerm_dns_a_record" "villesalonen" {
+  name                = "@"
+  zone_name           = azurerm_dns_zone.villesalonen.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 300
+  target_resource_id  = azurerm_static_site.villesalonen.id
+}
