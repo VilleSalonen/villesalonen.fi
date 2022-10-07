@@ -99,3 +99,11 @@ resource "azurerm_dns_txt_record" "mta_domain_key" {
     value = "k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAniue7iAt6B9I7Ck0ainYq6pphynwWNImg9LG8o1jCU4+jLBDM26Au6SKtOph3kDLaKeowr84uYLiWKV7q23p1UTCdEuWqel6hMs1SBXckY7uY/D03Lv2dYJnXPoEWv7jGKxdw7/sK4ragYiPBu7tEGA/lO7kX6mykPoNrufBxJ/CjW5HFBgBeBdUD2fPLk0Oz35YOgY7hZk1+tW8ZNuo5Kj4AjqYHAdKn01XNgsEtkkN9xrQzsWjZhIOXuJCH9G4sXlnaMwWwcgY9Lce3YVBMlQFIBaHfm7gJzka6nGzwGOk/M/zoueAAK/F3glXGLXWHxpWQCR7bBsrehSqaJhTmQIDAQAB"
   }
 }
+
+resource "azurerm_dns_cname_record" "email" {
+  name                = "email"
+  zone_name           = azurerm_dns_zone.villesalonen.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 3600
+  record              = "eu.mailgun.org"
+}
