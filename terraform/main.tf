@@ -52,3 +52,20 @@ resource "azurerm_dns_ns_record" "villesalonen" {
 
   records = ["ns1-34.azure-dns.com.", "ns2-34.azure-dns.net.", "ns3-34.azure-dns.org.", "ns4-34.azure-dns.info."]
 }
+
+resource "azurerm_dns_mx_record" "mailgun" {
+  name                = "@"
+  zone_name           = azurerm_dns_zone.villesalonen.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 3600
+
+  record {
+    preference = 1
+    exchange   = "mxa.eu.mailgun.org"
+  }
+
+  record {
+    preference = 2
+    exchange   = "mxb.eu.mailgun.org"
+  }
+}
