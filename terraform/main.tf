@@ -44,6 +44,14 @@ resource "azurerm_dns_a_record" "villesalonen" {
   target_resource_id  = azurerm_static_site.villesalonen.id
 }
 
+resource "azurerm_dns_cname_record" "www" {
+  name                = "www"
+  zone_name           = azurerm_dns_zone.villesalonen.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 3600
+  target_resource_id  = azurerm_static_site.villesalonen.id
+}
+
 resource "azurerm_dns_ns_record" "villesalonen" {
   name                = "@"
   zone_name           = azurerm_dns_zone.villesalonen.name
