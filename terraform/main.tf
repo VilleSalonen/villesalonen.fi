@@ -1,9 +1,9 @@
 terraform {
   backend "azurerm" {
     resource_group_name  = "tfstate"
-    storage_account_name = "tfstate9692"
+    storage_account_name = "tfstate12934"
     container_name       = "tfstate"
-    key                  = "terraform.tfstate"
+    key                  = "villesalonenfi/terraform.tfstate"
   }
 
   required_providers {
