@@ -61,49 +61,58 @@ resource "azurerm_dns_ns_record" "villesalonen" {
   records = ["ns1-34.azure-dns.com.", "ns2-34.azure-dns.net.", "ns3-34.azure-dns.org.", "ns4-34.azure-dns.info."]
 }
 
-resource "azurerm_dns_mx_record" "mailgun" {
+resource "azurerm_dns_mx_record" "mx" {
   name                = "@"
   zone_name           = azurerm_dns_zone.villesalonen.name
   resource_group_name = azurerm_resource_group.rg.name
   ttl                 = 3600
 
   record {
-    preference = 1
-    exchange   = "mxa.eu.mailgun.org"
+    preference = 10
+    exchange   = "in1-smtp.messagingengine.com."
   }
 
   record {
-    preference = 2
-    exchange   = "mxb.eu.mailgun.org"
+    preference = 20
+    exchange   = "in2-smtp.messagingengine.com."
   }
+
+  depends_on = [
+    azurerm_dns_zone.villesalonen
+  ]
 }
 
-resource "azurerm_dns_txt_record" "mailgun" {
+resource "azurerm_dns_cname_record" "cname1" {
+  name                = "fm1._domainkey"
+  zone_name           = azurerm_dns_zone.villesalonen.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 300
+  record              = "fm1.villesalonen.fi.dkim.fmhosted.com."
+}
+
+resource "azurerm_dns_cname_record" "cname2" {
+  name                = "fm2._domainkey"
+  zone_name           = azurerm_dns_zone.villesalonen.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 300
+  record              = "fm2.villesalonen.fi.dkim.fmhosted.com."
+}
+
+resource "azurerm_dns_cname_record" "cname3" {
+  name                = "fm3._domainkey"
+  zone_name           = azurerm_dns_zone.villesalonen.name
+  resource_group_name = azurerm_resource_group.rg.name
+  ttl                 = 300
+  record              = "fm3.villesalonen.fi.dkim.fmhosted.com."
+}
+
+resource "azurerm_dns_txt_record" "txt" {
   name                = "@"
   zone_name           = azurerm_dns_zone.villesalonen.name
   resource_group_name = azurerm_resource_group.rg.name
-  ttl                 = 3600
+  ttl                 = 300
 
   record {
-    value = "v=spf1 include:mailgun.org ~all"
+    value = "v=spf1 include:spf.messagingengine.com ?all"
   }
-}
-
-resource "azurerm_dns_txt_record" "mta_domain_key" {
-  name                = "mta._domainkey"
-  zone_name           = azurerm_dns_zone.villesalonen.name
-  resource_group_name = azurerm_resource_group.rg.name
-  ttl                 = 3600
-
-  record {
-    value = "k=rsa; p=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAniue7iAt6B9I7Ck0ainYq6pphynwWNImg9LG8o1jCU4+jLBDM26Au6SKtOph3kDLaKeowr84uYLiWKV7q23p1UTCdEuWqel6hMs1SBXckY7uY/D03Lv2dYJnXPoEWv7jGKxdw7/sK4ragYiPBu7tEGA/lO7kX6mykPoNrufBxJ/CjW5HFBgBeBdUD2fPLk0Oz35YOgY7hZk1+tW8ZNuo5Kj4AjqYHAdKn01XNgsEtkkN9xrQzsWjZhIOXuJCH9G4sXlnaMwWwcgY9Lce3YVBMlQFIBaHfm7gJzka6nGzwGOk/M/zoueAAK/F3glXGLXWHxpWQCR7bBsrehSqaJhTmQIDAQAB"
-  }
-}
-
-resource "azurerm_dns_cname_record" "email" {
-  name                = "email"
-  zone_name           = azurerm_dns_zone.villesalonen.name
-  resource_group_name = azurerm_resource_group.rg.name
-  ttl                 = 3600
-  record              = "eu.mailgun.org"
 }
